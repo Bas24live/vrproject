@@ -7,34 +7,29 @@ using RAIN.Core;
 [RAINAction]
 public class LookAround : RAINAction
 {
-
-
-    public override void Start(RAIN.Core.AI ai)
+    public LookAround()
     {
-        base.Start(ai);
+        actionName = "lookAround";
     }
 
-    public override ActionResult Execute(RAIN.Core.AI ai)
+    public override ActionResult Execute(AI ai)
     {
-		float t = 0.0f;
-		float T = 100.0f;
-		while (t < T) {
-			ai.Kinematic.Orientation = new Vector3 (0, direction (t), 0);
-			t += Time.deltaTime;
-		}
+        // get the unit vector one value ahead of the ai
+        Vector3 ahead = ai.Kinematic.Position + new Vector3(0, 0, 1.0f);
+        Vector3 leftLook = rotatePointAroundPivot(ahead, ai.Kinematic.Position, new Vector3(0, 60, 0));
+        Vector3 rightLook = rotatePointAroundPivot(ahead, ai.Kinematic.Position, new Vector3(0, 300, 0));
 
+        ai.WorkingMemory.SetItem<Vector3>("leftLook", leftLook);
+        ai.WorkingMemory.SetItem<Vector3>("rightLook", rightLook);
+        
         return ActionResult.SUCCESS;
     }
 
-    private float direction(float t)
+    private Vector3 rotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 eulerAngles)
     {
-        float alpha = .1f;
-
-		return alpha*Mathf.Sin(2 * Mathf.PI * t);
+        Vector3 direction = point - pivot;
+        Vector3 newDirection = Quaternion.Euler(eulerAngles) * direction;
+        return newDirection + pivot;
     }
-
-    public override void Stop(RAIN.Core.AI ai)
-    {
-        base.Stop(ai);
-    }
+ 
 }
