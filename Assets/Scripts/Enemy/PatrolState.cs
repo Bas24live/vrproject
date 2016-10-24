@@ -28,7 +28,11 @@ public class PatrolState : IEnemyState {
         enemy.currentState = enemy.chaseState;
     }
 
-    
+    public void ToLasKnownPositionState()
+    {
+        enemy.currentState = enemy.alertSate;
+    }
+
     public void UpdateState() {
         Look();
         Patrol();
@@ -36,7 +40,7 @@ public class PatrolState : IEnemyState {
 
     private void Look() {
         RaycastHit hit;
-        if (Physics.SphereCast(enemy.eyes.transform.position, enemy.sightRadius, enemy.eyes.transform.forward, out hit, enemy.sightRange) && hit.collider.CompareTag("Player") ) {
+        if (Physics.Raycast(enemy.eyes.transform.position, enemy.eyes.transform.forward, out hit, enemy.sightRange) && hit.collider.CompareTag("Player") ) {
             enemy.chaseTarget = hit.transform;
             ToChaseState();
         }

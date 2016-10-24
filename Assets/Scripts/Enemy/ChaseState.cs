@@ -18,6 +18,12 @@ public class ChaseState : IEnemyState {
 
     }
 
+    public void ToLasKnownPositionState() {
+        enemy.lastKnownPos = enemy.chaseTarget.position;
+        EventManager.TriggerEvent("LastKnownPosition");
+        enemy.currentState = enemy.lastKnownPositionState;
+    }
+
     public void ToAlertState() {
         enemy.currentState = enemy.alertSate;
     }
@@ -34,10 +40,10 @@ public class ChaseState : IEnemyState {
     private void Look() {
         RaycastHit hit;
         Vector3 enemyToTarget = (enemy.chaseTarget.position + enemy.offset) - enemy.eyes.transform.position;
-        if (Physics.SphereCast(enemy.eyes.transform.position, enemy.sightRadius, enemyToTarget, out hit, enemy.sightRange) && hit.collider.CompareTag("Player"))
+        if (Physics.Raycast(enemy.eyes.transform.position, enemyToTarget, out hit, enemy.sightRange) && hit.collider.CompareTag("Player"))
             enemy.chaseTarget = hit.transform;
         else
-            ToAlertState();
+            ToLasKnownPositionState();
     }
 
     private void Chase() {

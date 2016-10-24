@@ -5,12 +5,12 @@ public class PlayerController : MonoBehaviour {
 
     public float speed;
 	public bool oldSchoolControls; //Apparently they are clunky and not fun :(
-    private int faceF = 1, faceR = 2, faceB = 3, faceL = 4, curDirection, newDir;
+    //private int faceF = 1, faceR = 2, faceB = 3, faceL = 4, curDirection, newDir;
 
     // Use this for initialization
     void Start () {
-		curDirection = faceF;
-        newDir = faceF;
+		//curDirection = faceF;
+        //newDir = faceF;
 	}
 	
 	// Update is called once per frame
