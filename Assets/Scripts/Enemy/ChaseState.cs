@@ -19,9 +19,7 @@ public class ChaseState : IEnemyState {
     }
 
     public void ToLasKnownPositionState() {
-        enemy.lastKnownPos = enemy.chaseTarget.position;
         EventManager.TriggerEvent("LastKnownPosition");
-        enemy.currentState = enemy.lastKnownPositionState;
     }
 
     public void ToAlertState() {
@@ -30,6 +28,10 @@ public class ChaseState : IEnemyState {
 
     public void ToChaseState() {
         Debug.Log("Can't transition to same state");
+    }
+
+    public void ToSearchingState() {
+        enemy.currentState = enemy.searchingState;
     }
 
     public void UpdateState() {

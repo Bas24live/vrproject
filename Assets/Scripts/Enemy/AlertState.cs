@@ -29,9 +29,12 @@ public class AlertState : IEnemyState {
         searchTimer = 0f;
     }
 
+    public void ToSearchingState() {
+        enemy.currentState = enemy.searchingState;
+    }
+
     public void ToLasKnownPositionState()
     {
-        enemy.currentState = enemy.alertSate;
     }
 
     public void UpdateState() {

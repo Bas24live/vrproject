@@ -30,7 +30,10 @@ public class PatrolState : IEnemyState {
 
     public void ToLasKnownPositionState()
     {
-        enemy.currentState = enemy.alertSate;
+    }
+
+    public void ToSearchingState() {
+        enemy.currentState = enemy.searchingState;
     }
 
     public void UpdateState() {

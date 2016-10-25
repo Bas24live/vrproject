@@ -14,7 +14,7 @@ public class LastKnownPositionState : IEnemyState {
     }
 
     public void ToPatrolState() {
-        enemy.currentState = enemy.patrolState;
+        
     }
 
     public void ToAlertState() {
@@ -29,6 +29,10 @@ public class LastKnownPositionState : IEnemyState {
         Debug.Log("Can't transition to same state");
     }
 
+    public void ToSearchingState() {
+        enemy.currentState = enemy.searchingState;
+    }
+
     public void UpdateState() {
         Look();
         MoveToLastKnownPos();
@@ -36,7 +40,6 @@ public class LastKnownPositionState : IEnemyState {
 
     private void Look() {
         RaycastHit hit;
-        //Vector3 enemyToTarget = (enemy.chaseTarget.position + enemy.offset) - enemy.eyes.transform.position;
         if (Physics.Raycast(enemy.eyes.transform.position, enemy.eyes.transform.forward, out hit, enemy.sightRange) && hit.collider.CompareTag("Player")) {
             enemy.chaseTarget = hit.transform;
             ToChaseState();
@@ -45,7 +48,7 @@ public class LastKnownPositionState : IEnemyState {
 
     private void MoveToLastKnownPos() {
         if (Vector3.Distance(enemy.transform.position, enemy.lastKnownPos) <= enemy.closeEnough)
-            ToAlertState();
+            ToSearchingState();
         else {
             enemy.visionDisplay.color = new Color(255, 0, 0);
             enemy.navMeshAgent.destination = enemy.lastKnownPos;

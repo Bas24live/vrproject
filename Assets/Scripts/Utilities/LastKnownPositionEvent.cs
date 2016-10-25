@@ -8,12 +8,13 @@ public class LastKnownPositionEvent : MonoBehaviour
     StatePatternEnemy enemy;
 
     void Awake() {
-        lastKnownPositionListener = new UnityAction(LastKnownPosition);        
+        lastKnownPositionListener = new UnityAction(LastKnownPosition);
+        enemy = this.GetComponent<StatePatternEnemy>();
     }
 
     void OnEnable() {
         EventManager.StartListening("LastKnownPosition", LastKnownPosition);
-        enemy = this.GetComponent<StatePatternEnemy>();
+        
     }
 
     void OnDisable() {
@@ -21,6 +22,6 @@ public class LastKnownPositionEvent : MonoBehaviour
     }
 
     void LastKnownPosition() {
-        enemy.currentState = enemy.lastKnownPositionState;
+        enemy.LastKnownPosition();
     }
 }
