@@ -7,6 +7,7 @@ public class StatePatternEnemy : MonoBehaviour {
     public float searchingDuration = 4f;
     public float sightRange = 10f;
     public float closeEnough = 1f;
+    public float distanceAhead = 1f;
     public Transform[] waypoints;
     public Transform eyes;
     public Vector3 offset = new Vector3(0, .5f, 0);
@@ -19,6 +20,7 @@ public class StatePatternEnemy : MonoBehaviour {
     [HideInInspector] public PatrolState patrolState;
     [HideInInspector] public AlertState alertSate;
     [HideInInspector] public ChaseState chaseState;
+    [HideInInspector] public BlockingState blockingState;
     [HideInInspector] public LastKnownPositionState lastKnownPositionState;
     [HideInInspector] public SearchingState searchingState;
     [HideInInspector] public NavMeshAgent navMeshAgent;
@@ -30,6 +32,7 @@ public class StatePatternEnemy : MonoBehaviour {
         chaseState = new ChaseState(this);
         lastKnownPositionState = new LastKnownPositionState(this);
         searchingState = new SearchingState(this);
+        blockingState = new BlockingState(this);
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");

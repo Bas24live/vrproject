@@ -16,4 +16,6 @@ public interface IEnemyState {
     void ToLasKnownPositionState();
 
     void ToSearchingState();
+
+    void ToBlockingState();
 }

@@ -60,4 +60,9 @@ public class AlertState : IEnemyState {
         if (searchTimer >= enemy.searchingDuration)
             ToPatrolState();
     }
+
+    public void ToBlockingState()
+    {
+        enemy.currentState = enemy.blockingState;
+    }
 }

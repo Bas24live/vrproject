@@ -53,4 +53,8 @@ public class ChaseState : IEnemyState {
         enemy.navMeshAgent.destination = enemy.chaseTarget.position;
         enemy.navMeshAgent.Resume();
     }
+
+    public void ToBlockingState()
+    {
+    }
 }
