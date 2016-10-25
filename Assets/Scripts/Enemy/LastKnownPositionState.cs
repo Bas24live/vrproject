@@ -53,5 +53,8 @@ public class LastKnownPositionState : IEnemyState {
         }
     }
 
-
+    public void ToBlockingState()
+    {
+        enemy.currentState = enemy.blockingState;
+    }
 }

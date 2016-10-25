@@ -14,4 +14,6 @@ public interface IEnemyState {
     void ToAlertState();
 
     void ToLasKnownPositionState();
+
+    void ToBlockingState():
 }

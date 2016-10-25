@@ -56,4 +56,8 @@ public class PatrolState : IEnemyState {
             nextWatpoint = (nextWatpoint + 1) % enemy.waypoints.Length;
     }
 
+    public void ToBlockingState()
+    {
+        enemy.currentState = enemy.blockingState;
+    }
 }
