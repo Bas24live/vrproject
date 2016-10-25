@@ -48,7 +48,7 @@ public class PickupObject : MonoBehaviour {
                 {
                     carrying = true;
                     carriedObject = p.gameObject;
-                    carriedObject.rigidbody.useGravity = false;
+                    carriedObject.GetComponent<Rigidbody>().useGravity = false;
                 }
             }
         }
@@ -65,7 +65,7 @@ public class PickupObject : MonoBehaviour {
     void dropObject()
     {
         carrying = false;
-        carriedObject.gameObject.rigidbody.useGravity = true;
+        carriedObject.gameObject.GetComponent<Rigidbody>().useGravity = true;
         carriedObject = null;
     }
 
