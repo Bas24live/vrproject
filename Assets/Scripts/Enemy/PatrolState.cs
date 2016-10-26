@@ -36,12 +36,16 @@ public class PatrolState : IEnemyState {
         enemy.currentState = enemy.searchingState;
     }
 
+    public void ToBlockingState() {
+        enemy.currentState = enemy.blockingState;
+    }
+
     public void UpdateState() {
         Look();
         Patrol();
     }
 
-    private void Look() {
+    void Look() {
         RaycastHit hit;
         if (Physics.Raycast(enemy.eyes.transform.position, enemy.eyes.transform.forward, out hit, enemy.sightRange) && hit.collider.CompareTag("Player") ) {
             enemy.chaseTarget = hit.transform;
@@ -59,8 +63,5 @@ public class PatrolState : IEnemyState {
             nextWatpoint = (nextWatpoint + 1) % enemy.waypoints.Length;
     }
 
-    public void ToBlockingState()
-    {
-        enemy.currentState = enemy.blockingState;
-    }
+    
 }

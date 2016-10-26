@@ -5,6 +5,7 @@ using System;
 public class ChaseState : IEnemyState {
 
     private readonly StatePatternEnemy enemy;
+    private bool callForBlockHelp = true;
 
     public ChaseState(StatePatternEnemy statePatternEnemy) {
         enemy = statePatternEnemy;
@@ -20,10 +21,12 @@ public class ChaseState : IEnemyState {
 
     public void ToLasKnownPositionState() {
         EventManager.TriggerEvent("LastKnownPosition");
+        callForBlockHelp = true;
     }
 
     public void ToAlertState() {
         enemy.currentState = enemy.alertSate;
+        callForBlockHelp = true;
     }
 
     public void ToChaseState() {
@@ -32,6 +35,7 @@ public class ChaseState : IEnemyState {
 
     public void ToSearchingState() {
         enemy.currentState = enemy.searchingState;
+        callForBlockHelp = true;
     }
 
     public void UpdateState() {
@@ -49,6 +53,11 @@ public class ChaseState : IEnemyState {
     }
 
     private void Chase() {
+        if (callForBlockHelp) {
+            EventManager.TriggerEvent("Block");
+            callForBlockHelp = false;
+        }
+
         enemy.visionDisplay.color = new Color(255, 0, 0);
         enemy.navMeshAgent.destination = enemy.chaseTarget.position;
         enemy.navMeshAgent.Resume();

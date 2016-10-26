@@ -43,6 +43,10 @@ public class SearchingState : IEnemyState {
     public void ToSearchingState() {
     }
 
+    public void ToBlockingState() {
+
+    }
+
     public void UpdateState() {
         Look();
         if (newDestinations)
@@ -89,4 +93,6 @@ public class SearchingState : IEnemyState {
         }
         newDestinations = false;
     }
+
+    
 }

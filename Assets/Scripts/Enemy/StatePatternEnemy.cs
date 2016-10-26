@@ -54,4 +54,9 @@ public class StatePatternEnemy : MonoBehaviour {
         lastKnownPos = player.transform.position;
         currentState = lastKnownPositionState;
     }
+
+    public void Block() {
+        if (currentState != chaseState)
+            currentState = blockingState;
+    }
 }
