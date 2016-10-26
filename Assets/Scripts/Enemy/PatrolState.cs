@@ -24,8 +24,9 @@ public class PatrolState : IEnemyState {
         enemy.currentState = enemy.alertSate;
     }
 
-    public void ToChaseState() {
+    public void ToChaseState() {        
         enemy.currentState = enemy.chaseState;
+        ToBlockingState();
     }
 
     public void ToLasKnownPositionState()
@@ -37,7 +38,7 @@ public class PatrolState : IEnemyState {
     }
 
     public void ToBlockingState() {
-        enemy.currentState = enemy.blockingState;
+        EventManager.TriggerEvent("Block");
     }
 
     public void UpdateState() {

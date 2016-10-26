@@ -13,7 +13,7 @@ public class BlockingState : IEnemyState {
     public void UpdateState()
     {
         MoveTo();
-        Look();
+        //Look();
     }
 
     public void OnTriggerEnter(Collider collider)
@@ -25,13 +25,15 @@ public class BlockingState : IEnemyState {
     }
 
     public void ToBlockingState() {
+
     }
 
     public void ToChaseState() {
+        enemy.currentState = enemy.chaseState;
     }
 
     public void ToLasKnownPositionState() {
-
+        EventManager.TriggerEvent("LastKnownPosition");
     }
 
     public void ToPatrolState()
@@ -46,19 +48,19 @@ public class BlockingState : IEnemyState {
         RaycastHit hit;
         if (Physics.Raycast(enemy.eyes.transform.position, enemy.eyes.transform.forward, out hit, enemy.sightRange) && hit.collider.CompareTag("Player")) {
             enemy.chaseTarget = hit.transform;
-            //ToChaseState();
+            ToChaseState();
         }
     }
 
     void MoveTo() {
+        enemy.visionDisplay.color = new Color(253, 246, 0);
         Vector3 position = enemy.player.transform.position;
-
+       
         NavMeshHit hit;
         if (NavMesh.SamplePosition(position, out hit, enemy.distanceAhead, NavMesh.AllAreas)) {
             enemy.navMeshAgent.destination = hit.position;
         }
-        else
-            ToPatrolState();
+
         enemy.navMeshAgent.Resume();
 
     }

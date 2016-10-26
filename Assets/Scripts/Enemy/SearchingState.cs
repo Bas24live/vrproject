@@ -35,6 +35,7 @@ public class SearchingState : IEnemyState {
         destIndex = 0;
         newDestinations = true;
         enemy.currentState = enemy.chaseState;
+        ToBlockingState();
     }
 
     public void ToLasKnownPositionState() {
@@ -44,7 +45,7 @@ public class SearchingState : IEnemyState {
     }
 
     public void ToBlockingState() {
-
+        EventManager.TriggerEvent("Block");
     }
 
     public void UpdateState() {
@@ -63,8 +64,8 @@ public class SearchingState : IEnemyState {
     }
 
     void Search() {
-        enemy.visionDisplay.color = new Color(0, 255, 86, 255);
-        
+        enemy.visionDisplay.color = new Color(253, 246, 0);
+
         if (destIndex == (destinations.Length - 1) && Vector3.Distance(enemy.transform.position, destinations[destIndex]) <= enemy.closeEnough)
             ToPatrolState();
         if (Vector3.Distance(enemy.transform.position, destinations[destIndex]) <= enemy.closeEnough)

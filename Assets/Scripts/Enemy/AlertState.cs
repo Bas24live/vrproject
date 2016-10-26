@@ -27,6 +27,7 @@ public class AlertState : IEnemyState {
     public void ToChaseState() {
         enemy.currentState = enemy.chaseState;
         searchTimer = 0f;
+        ToBlockingState();
     }
 
     public void ToSearchingState() {
@@ -63,6 +64,6 @@ public class AlertState : IEnemyState {
 
     public void ToBlockingState()
     {
-        enemy.currentState = enemy.blockingState;
+        EventManager.TriggerEvent("Block");
     }
 }

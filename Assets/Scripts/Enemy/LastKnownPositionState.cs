@@ -23,6 +23,7 @@ public class LastKnownPositionState : IEnemyState {
 
     public void ToChaseState() {
         enemy.currentState = enemy.chaseState;
+        ToBlockingState();
     }
 
     public void ToLasKnownPositionState() {
@@ -58,6 +59,6 @@ public class LastKnownPositionState : IEnemyState {
 
     public void ToBlockingState()
     {
-        enemy.currentState = enemy.blockingState;
+        EventManager.TriggerEvent("Block");
     }
 }
