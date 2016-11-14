@@ -34,8 +34,11 @@ public class AlertState : IEnemyState {
         enemy.currentState = enemy.searchingState;
     }
 
-    public void ToLasKnownPositionState()
-    {
+    public void ToLasKnownPositionState() {
+    }
+
+    public void ToDeathState() {
+        enemy.currentState = enemy.deathState;
     }
 
     public void UpdateState() {
@@ -53,7 +56,7 @@ public class AlertState : IEnemyState {
 
     void Alert() {
         enemy.visionDisplay.color = new Color(253, 246, 0);
-        enemy.navMeshAgent.Stop();
+        //enemy.navMeshAgent.Stop();
 
         enemy.transform.Rotate(0, enemy.searchingTurnSpeed * Time.deltaTime, 0);
         searchTimer += Time.deltaTime;

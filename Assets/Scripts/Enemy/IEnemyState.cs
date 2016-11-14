@@ -18,4 +18,6 @@ public interface IEnemyState {
     void ToSearchingState();
 
     void ToBlockingState();
+
+    void ToDeathState();
 }

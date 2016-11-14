@@ -44,6 +44,10 @@ public class BlockingState : IEnemyState {
     public void ToSearchingState() {
     }
 
+    public void ToDeathState() {
+        enemy.currentState = enemy.deathState;
+    }
+
     private void Look() {
         RaycastHit hit;
         if (Physics.Raycast(enemy.eyes.transform.position, enemy.eyes.transform.forward, out hit, enemy.sightRange) && hit.collider.CompareTag("Player")) {
@@ -61,7 +65,7 @@ public class BlockingState : IEnemyState {
             enemy.navMeshAgent.destination = hit.position;
         }
 
-        enemy.navMeshAgent.Resume();
+        //enemy.navMeshAgent.Resume();
 
     }
 }

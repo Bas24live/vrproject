@@ -34,6 +34,10 @@ public class LastKnownPositionState : IEnemyState {
         enemy.currentState = enemy.searchingState;
     }
 
+    public void ToDeathState() {
+        enemy.currentState = enemy.deathState;
+    }
+
     public void UpdateState() {
         Look();
         MoveToLastKnownPos();
@@ -52,7 +56,7 @@ public class LastKnownPositionState : IEnemyState {
             ToSearchingState();
         else {
             enemy.visionDisplay.color = new Color(255, 0, 0);
-            enemy.navMeshAgent.destination = enemy.lastKnownPos;
+            enemy.navMeshAgent.SetPath(enemy.navMeshAgent.path);// = enemy.lastKnownPos;
             enemy.navMeshAgent.Resume();
         }
     }

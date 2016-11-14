@@ -14,10 +14,14 @@ public class PatrolState : IEnemyState {
     public void OnTriggerEnter(Collider collider) {
         if (collider.gameObject.CompareTag("Player"))
             ToAlertState();
+        if (collider.CompareTag("Pickupable")) {
+            enemy.thrownVelocity = collider.GetComponent<Rigidbody>().velocity;
+            ToDeathState();
+        }
     }
 
     public void ToPatrolState() {
-        Debug.Log("Can't transition to same state");
+        //Current state
     }
 
     public void ToAlertState() {
@@ -29,8 +33,8 @@ public class PatrolState : IEnemyState {
         ToBlockingState();
     }
 
-    public void ToLasKnownPositionState()
-    {
+    public void ToLasKnownPositionState() {
+        enemy.currentState = enemy.lastKnownPositionState;
     }
 
     public void ToSearchingState() {
@@ -39,6 +43,12 @@ public class PatrolState : IEnemyState {
 
     public void ToBlockingState() {
         EventManager.TriggerEvent("Block");
+    }
+
+    public void ToDeathState() {
+        Debug.Log("From patrol to death");
+        enemy.currentState = enemy.deathState;
+        
     }
 
     public void UpdateState() {
@@ -57,7 +67,7 @@ public class PatrolState : IEnemyState {
     void Patrol() {
         enemy.visionDisplay.color = new Color(0, 255, 86, 255);
         enemy.navMeshAgent.destination = enemy.waypoints[nextWatpoint].position;
-        enemy.navMeshAgent.Resume();
+        //enemy.navMeshAgent.Resume();
 
         //Move from waypoint to waypoint in a looping fashion
         if (enemy.navMeshAgent.remainingDistance <= enemy.navMeshAgent.stoppingDistance && !enemy.navMeshAgent.pathPending)

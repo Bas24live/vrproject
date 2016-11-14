@@ -13,9 +13,15 @@ public class StatePatternEnemy : MonoBehaviour {
     public Vector3 offset = new Vector3(0, .5f, 0);
     public Light visionDisplay;
     public float searchDistance = 5;
+    public GameObject wall;
 
     [HideInInspector] public Transform chaseTarget;
     [HideInInspector] public GameObject player;
+    [HideInInspector] public NavMeshAgent navMeshAgent;
+    [HideInInspector] public Vector3 lastKnownPos;
+    [HideInInspector] public Rigidbody rb;
+    [HideInInspector] public Vector3 thrownVelocity;
+
     [HideInInspector] public IEnemyState currentState;
     [HideInInspector] public PatrolState patrolState;
     [HideInInspector] public AlertState alertSate;
@@ -23,8 +29,8 @@ public class StatePatternEnemy : MonoBehaviour {
     [HideInInspector] public BlockingState blockingState;
     [HideInInspector] public LastKnownPositionState lastKnownPositionState;
     [HideInInspector] public SearchingState searchingState;
-    [HideInInspector] public NavMeshAgent navMeshAgent;
-    [HideInInspector] public Vector3 lastKnownPos;
+    [HideInInspector] public DeathState deathState;
+
 
     private void Awake() {  
         patrolState = new PatrolState(this);
@@ -33,9 +39,11 @@ public class StatePatternEnemy : MonoBehaviour {
         lastKnownPositionState = new LastKnownPositionState(this);
         searchingState = new SearchingState(this);
         blockingState = new BlockingState(this);
+        deathState = new DeathState(this);
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
+        rb = GetComponent<Rigidbody>();
     }
 
 	void Start () {
@@ -52,7 +60,8 @@ public class StatePatternEnemy : MonoBehaviour {
 
     public void LastKnownPosition() {
         lastKnownPos = player.transform.position;
-        currentState = lastKnownPositionState;
+        if (currentState != deathState)
+            currentState = lastKnownPositionState;
     }
 
     public void Block() {

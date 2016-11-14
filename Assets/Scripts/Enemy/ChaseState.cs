@@ -35,6 +35,10 @@ public class ChaseState : IEnemyState {
         enemy.currentState = enemy.searchingState;
     }
 
+    public void ToDeathState() {
+        enemy.currentState = enemy.deathState;
+    }
+
     public void UpdateState() {
         Look();
         Chase();
@@ -52,7 +56,7 @@ public class ChaseState : IEnemyState {
     private void Chase() {
         enemy.visionDisplay.color = new Color(255, 0, 0);
         enemy.navMeshAgent.destination = enemy.chaseTarget.position;
-        enemy.navMeshAgent.Resume();
+        //enemy.navMeshAgent.Resume();
     }
 
     public void ToBlockingState() {

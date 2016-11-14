@@ -48,6 +48,10 @@ public class SearchingState : IEnemyState {
         EventManager.TriggerEvent("Block");
     }
 
+    public void ToDeathState() {
+        enemy.currentState = enemy.deathState;
+    }
+
     public void UpdateState() {
         Look();
         if (newDestinations)
