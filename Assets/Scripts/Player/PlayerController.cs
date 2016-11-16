@@ -23,13 +23,13 @@ public class PlayerController : MonoBehaviour {
         Vector3 movement = Vector3.zero;
 
         if (Input.GetKey(KeyCode.W))
-            movement = transform.forward * movementSpeed * Time.deltaTime;
+            movement += transform.forward * movementSpeed * Time.deltaTime;
         if (Input.GetKey(KeyCode.S))
-            movement = -transform.forward * movementSpeed * Time.deltaTime;
+            movement += -transform.forward * movementSpeed * Time.deltaTime;
         if (Input.GetKey(KeyCode.D))
-            movement = transform.right * movementSpeed * Time.deltaTime;
+            movement += transform.right * movementSpeed * Time.deltaTime;
         if (Input.GetKey(KeyCode.A))
-            movement = -transform.right * movementSpeed * Time.deltaTime;        
+            movement += -transform.right * movementSpeed * Time.deltaTime;        
         
         rb.MoveRotation(Quaternion.Euler(rb.rotation.eulerAngles + rotation));
         rb.MovePosition(transform.position + movement);           
