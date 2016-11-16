@@ -16,25 +16,19 @@ Platform assembly: D:\Varsity\2016\Second Semester\WRVR411\Projects\vrproject\Bu
 Loading D:\Varsity\2016\Second Semester\WRVR411\Projects\vrproject\Builds\v0.1.1_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\Varsity\2016\Second Semester\WRVR411\Projects\vrproject\Builds\v0.1.1_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading D:\Varsity\2016\Second Semester\WRVR411\Projects\vrproject\Builds\v0.1.1_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.079 seconds
+- Completed reload, in  0.072 seconds
 Platform assembly: D:\Varsity\2016\Second Semester\WRVR411\Projects\vrproject\Builds\v0.1.1_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Varsity\2016\Second Semester\WRVR411\Projects\vrproject\Builds\v0.1.1_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.430000 ms
+UnloadTime: 1.354711 ms
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 1098 -> priority: 1 
+  Thread -> id: 26cc -> priority: 1 
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 6.974000 ms
+UnloadTime: 6.001600 ms
 
 Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 596.
-Total: 0.349555 ms (FindLiveObjects: 0.044000 ms CreateObjectMapping: 0.021511 ms MarkObjects: 0.271333 ms  DeleteObjects: 0.006844 ms)
-
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 3.051155 ms
-
-Unloading 18 unused Assets to reduce memory usage. Loaded Objects now: 204.
-Total: 0.355422 ms (FindLiveObjects: 0.026888 ms CreateObjectMapping: 0.013200 ms MarkObjects: 0.217555 ms  DeleteObjects: 0.090444 ms)
+Total: 0.532400 ms (FindLiveObjects: 0.061600 ms CreateObjectMapping: 0.027377 ms MarkObjects: 0.420933 ms  DeleteObjects: 0.015644 ms)
 

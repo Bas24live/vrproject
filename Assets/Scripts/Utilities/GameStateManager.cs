@@ -24,15 +24,14 @@ public class GameStateManager : MonoBehaviour {
 
 
     public void Resume() {
-        Time.timeScale = 1;
-        playerCamera.gameObject.GetComponent<CameraController>().enabled = true;
+        paused = false;
+        Time.timeScale = 1;        
         canvas.gameObject.SetActive(false);
         
     }
 
     public void Pause() {
         Time.timeScale = 0;
-        playerCamera.gameObject.GetComponent<CameraController>().enabled = false;
         canvas.gameObject.SetActive(true);
         
     }

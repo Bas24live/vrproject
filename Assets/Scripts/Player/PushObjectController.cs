@@ -9,20 +9,20 @@ public class PushObjectController : MonoBehaviour {
     GameObject pushedObject;
     Rigidbody rb;
     bool pushing = false;
-    Vector3 direction;
+    bool xDirection = true;
+    Vector3 pDirection;
+    Vector3 oDirection;
+
 
     void Update() {
         if (pushing) {
             Pushing(pushedObject);
-            if (Input.GetKeyDown(KeyCode.Q))
-                //ThrowObject();
 
             if (Input.GetKeyDown(KeyCode.E))
                 Leave();
         }
-        else {
+        else
             Push();
-        }
     }
 
     void Push() {
@@ -31,32 +31,43 @@ public class PushObjectController : MonoBehaviour {
             if (Physics.Raycast(transform.position, transform.forward, out hit, distance) && hit.collider.CompareTag("Wall_Inner")) {
                 pushedObject = hit.collider.gameObject;
                 rb = pushedObject.GetComponent<Rigidbody>();
+                xDirection = getDirection();              
                 pushing = true;
-                direction = getDirection();
+                rb.mass = 2;
             }
         }
     }
 
     void Pushing(GameObject o) {
-        direction = new Vector3(direction.x * transform.position.x, direction.y * transform.position.y, direction.z * transform.position.z);
-        o.transform.position = direction + o.transform.position * distance;
+        Vector3 pPos = transform.position;
+        Vector3 oPos = o.transform.position;
+
+        if (xDirection)
+            transform.position = new Vector3(pPos.x, pPos.y, oPos.z);
+        else
+            transform.position = new Vector3(oPos.x, pPos.y, pPos.z);
+
+        o.transform.position = pPos + transform.forward * distance;
+
+        if (xDirection)
+            o.transform.position = new Vector3(o.transform.position.x, oPos.y, oPos.z);
+        else
+            o.transform.position = new Vector3(oPos.x, oPos.y, o.transform.position.z);
     }
 
     void Leave() {
         pushing = false;
         pushedObject = null;
+        rb.mass = 1;
     }
 
-    Vector3 getDirection() {
+    bool getDirection() {
         float yRotation = transform.rotation.y;
-
-        if (yRotation >= -45 && yRotation <= 45)
-            return new Vector3(0, 0, 1);
-        else if (yRotation >= 45 && yRotation <= 135)
-            return new Vector3(1, 0, 0);
-        else if (yRotation >= -135 && yRotation <= -45)
-            return new Vector3(-1, 0, 0);
+         
+        if (yRotation >= .38 && yRotation <= .93 || yRotation >= -.93 && yRotation <= -.38) 
+            return true;
         else
-            return new Vector3(0, 0, -1);
+            return false;
+        
     }
 }
