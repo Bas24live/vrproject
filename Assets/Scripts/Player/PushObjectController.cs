@@ -7,14 +7,19 @@ public class PushObjectController : MonoBehaviour {
     public float throwForce = 20f;
 
     GameObject pushedObject;
-    Rigidbody rb;
+    PlayerController playerController;
+    Rigidbody playerRb, pushedObjectRb;
     bool pushing = false;
     bool xDirection = true;
     Vector3 pDirection;
     Vector3 oDirection;
 
+    void Start() {
+        playerController = GetComponent<PlayerController>();
+        playerRb = GetComponent<Rigidbody>();
+    }
 
-    void Update() {
+    void FixedUpdate() {
         if (pushing) {
             Pushing(pushedObject);
 
@@ -30,10 +35,12 @@ public class PushObjectController : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, distance) && hit.collider.CompareTag("Wall_Inner")) {
                 pushedObject = hit.collider.gameObject;
-                rb = pushedObject.GetComponent<Rigidbody>();
-                xDirection = getDirection();              
+                pushedObjectRb = pushedObject.GetComponent<Rigidbody>();        
+                
+                //pushedObjectRb.mass = 2;
+                playerController.movementSpeed /= 2;
+                xDirection = getDirection();
                 pushing = true;
-                rb.mass = 2;
             }
         }
     }
@@ -43,31 +50,30 @@ public class PushObjectController : MonoBehaviour {
         Vector3 oPos = o.transform.position;
 
         if (xDirection)
-            transform.position = new Vector3(pPos.x, pPos.y, oPos.z);
+            playerRb.MovePosition(new Vector3(pPos.x, pPos.y, oPos.z));
         else
-            transform.position = new Vector3(oPos.x, pPos.y, pPos.z);
+            playerRb.MovePosition(new Vector3(oPos.x, pPos.y, pPos.z));
 
         o.transform.position = pPos + transform.forward * distance;
 
         if (xDirection)
-            o.transform.position = new Vector3(o.transform.position.x, oPos.y, oPos.z);
+            pushedObjectRb.MovePosition(new Vector3(o.transform.position.x, oPos.y, oPos.z));
         else
-            o.transform.position = new Vector3(oPos.x, oPos.y, o.transform.position.z);
+            pushedObjectRb.MovePosition(new Vector3(oPos.x, oPos.y, o.transform.position.z));
     }
 
     void Leave() {
         pushing = false;
         pushedObject = null;
-        rb.mass = 1;
+        playerController.movementSpeed *= 2;
     }
 
     bool getDirection() {
-        float yRotation = transform.rotation.y;
+        float yRotation = transform.rotation.eulerAngles.y;
          
-        if (yRotation >= .38 && yRotation <= .93 || yRotation >= -.93 && yRotation <= -.38) 
+        if (yRotation >= 45 && yRotation <= 135 || yRotation >= -135 && yRotation <= -45) 
             return true;
         else
             return false;
-        
     }
 }
