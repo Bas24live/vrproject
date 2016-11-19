@@ -75,7 +75,7 @@ public class DungeonGenerator : MonoBehaviour{
 	public	int _dungeonWidth	= 81;
 	public	int _dungeonHeight	= 41;
 	
-	public	bool _randomSeedOn = false;
+	public	bool _randomSeedOn = true;
 	public	int  _seed;					//random seed for map generation
 	
 	public	bool addMapToggle = true;	//toggle mapview between _regions and _dungeon
@@ -143,13 +143,13 @@ public class DungeonGenerator : MonoBehaviour{
 		
 		int printAbleSeed = 000;	//smaller memorizeable seed for debugging
 
-		if(_randomSeedOn)	{	Random.seed = this._seed;	}
+		if(_randomSeedOn)	{	Random.InitState(this._seed);	}
 		else				{
 		//	create random base seed to make it visible for debugging			
 		//	printAbleSeed = Random.Range(int.MinValue,int.MaxValue);	//full range
 			printAbleSeed = Random.Range(0,999);						//Debug: 3 digits, easier to remember
 			print ("Level Seed: <"+printAbleSeed+">");
-			Random.seed = printAbleSeed;
+            Random.InitState(printAbleSeed);
 		}
 		
 		
@@ -1593,8 +1593,8 @@ public class DungeonGenerator : MonoBehaviour{
 		this.streamLine				= streamLine			?? this.streamLine;
 		this._seed					= seed					?? this._seed;
 		
-		if(_randomSeedOn || seed != null){	//use random seed if overlaod was used, or if it is enabled in general
-			Random.seed = this._seed;
+		if(_randomSeedOn || seed != null){  //use random seed if overlaod was used, or if it is enabled in general
+            Random.InitState(this._seed);
 		}					
 		//init grids
 		_dungeon		= new Tile[_dungeonWidth, _dungeonHeight];
@@ -2220,7 +2220,7 @@ public class DungeonGenerator : MonoBehaviour{
 		this._seed					= seed					?? this._seed;
 		
 		if(_randomSeedOn || seed != null){	//use random seed if overlaod was used, or if it is enabled in general
-			Random.seed = this._seed;
+			Random.InitState(this._seed);
 		}	
 		
 		this.MapSize = new IntVector2(_dungeonWidth, _dungeonHeight);		
