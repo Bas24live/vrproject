@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameStateManager : MonoBehaviour {
-
-    GameObject pauseMenu;
+public class GameStateManager : MonoBehaviour { 
+    
     GameObject playerCamera;
 
     GameObject worldContainer;
     GameObject wallsContainer;
 
+    public GameObject pauseMenu;
     public GameObject blockPrefab;
     public GameObject floorPrefab;
+    
 
     bool paused;
 
@@ -18,8 +19,6 @@ public class GameStateManager : MonoBehaviour {
     {   
         worldContainer = GameObject.FindGameObjectWithTag("World");
         playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
-        pauseMenu = GameObject.FindGameObjectWithTag("PauseMenu");
-        pauseMenu.SetActive(false);
     }
 
     void Start() {
@@ -33,20 +32,19 @@ public class GameStateManager : MonoBehaviour {
         int xSize = grid.GetLength(0);
         int ySize = grid.GetLength(1);
         int xOff = 1;
-        int yOff = 0;
+        float yOff = .5f;
         int zOff = 1;
 
-        Vector3 midOff = new Vector3(0F, -yOff / 2F, 0F); 
         wallsContainer = new GameObject("Walls");
         wallsContainer.transform.SetParent(worldContainer.transform);
-       
-        //GameObject floor = Instantiate(floorPrefab, new Vector3(0, 0, 0), Quaternion.identity, wallsContainer.transform) as GameObject;
-        //floor.transform.localScale.Set(.1f * xSize, 1, .1f * ySize);
+
+        GameObject floor = Instantiate(floorPrefab, new Vector3((xSize - 1)/2, 0, (ySize - 1)/2), Quaternion.identity, wallsContainer.transform) as GameObject;
+        floor.transform.localScale += new Vector3(.1f * (xSize/2), 0, .1f * (ySize/2));
 
         for (int x = 0; x < xSize; x++)
             for (int y = 0; y < ySize; y++)
-                if (grid[x, y] == Tile.Wall)              
-                    CreateBlock(new Vector3(xOff * x, .5f, zOff * y) + midOff);
+                if (grid[x, y] == Tile.Wall)
+                    CreateBlock(new Vector3(xOff * x, yOff, zOff * y));
     }
 
     private void CreateBlock(Vector3 pos)
