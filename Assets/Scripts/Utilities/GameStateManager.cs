@@ -3,21 +3,28 @@ using System.Collections;
 
 public class GameStateManager : MonoBehaviour {
 
-    public Transform canvas;
-    public Transform playerCamera;
-    private Transform mapParent;
-    private Transform dynBlockPrefab;
+    GameObject pauseMenu;
+    GameObject playerCamera;
+
+    GameObject worldContainer;
+    GameObject wallsContainer;
+
+    public GameObject blockPrefab;
+    public GameObject floorPrefab;
 
     bool paused;
 
     void Awake()
-    {
-        dynBlockPrefab = GameObject.FindWithTag("Wall_Inner").transform;        
+    {   
+        worldContainer = GameObject.FindGameObjectWithTag("World");
+        playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
+        pauseMenu = GameObject.FindGameObjectWithTag("PauseMenu");
+        pauseMenu.SetActive(false);
     }
 
     void Start() {
         paused = false;
-        DungeonGenerator.instance.GenerateHauberkDungeon(23, 23);
+        DungeonGenerator.instance.GenerateHauberkDungeon();
         GenerateByGrid(DungeonGenerator._dungeon);
     }
 
@@ -30,58 +37,48 @@ public class GameStateManager : MonoBehaviour {
         int zOff = 1;
 
         Vector3 midOff = new Vector3(0F, -yOff / 2F, 0F); 
-        mapParent = new GameObject().transform;
-        mapParent.name = "DynamicBlocks";
+        wallsContainer = new GameObject("Walls");
+        wallsContainer.transform.SetParent(worldContainer.transform);
+       
+        //GameObject floor = Instantiate(floorPrefab, new Vector3(0, 0, 0), Quaternion.identity, wallsContainer.transform) as GameObject;
+        //floor.transform.localScale.Set(.1f * xSize, 1, .1f * ySize);
 
         for (int x = 0; x < xSize; x++)
-        {
             for (int y = 0; y < ySize; y++)
-            {
-                switch (grid[x, y])
-                {
-                    default:
-                        break;
-                    case Tile.Floor:
-                        //CreateBlock(new Vector3(xOff * x, yOff * 0F, zOff * y) + midOff);
-                        break;
-                    case Tile.RoomFloor:
-                        //CreateBlock(new Vector3(xOff * x, yOff * 0F, zOff * y) + midOff);
-                        break;
-                    case Tile.Wall:
-                        CreateBlock(new Vector3(xOff * x, yOff * 0F, zOff * y) + midOff);
-                        CreateBlock(new Vector3(xOff * x, yOff * 1F, zOff * y) + midOff);
-                        break;
-                }
-            }
-        }
+                if (grid[x, y] == Tile.Wall)              
+                    CreateBlock(new Vector3(xOff * x, .5f, zOff * y) + midOff);
     }
 
     private void CreateBlock(Vector3 pos)
     {
-        GameObject block = Instantiate(dynBlockPrefab, pos, Quaternion.identity) as GameObject;
-        //block.transform.parent = mapParent;
+        Instantiate(blockPrefab, pos, Quaternion.identity, wallsContainer.transform);
     }
 
-    void Update () {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            paused = !paused;
 
-        if (paused)
-            Pause();
-        else
-            Resume();
+
+    void Update () {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            paused = !paused;
+            if (paused)
+                Pause();
+            else
+                Resume();
+        }
+            
+
+        
 	}
 
     public void Resume() {
         paused = false;
         Time.timeScale = 1;        
-        canvas.gameObject.SetActive(false);
+        pauseMenu.gameObject.SetActive(false);
         
     }
 
     public void Pause() {
         Time.timeScale = 0;
-        canvas.gameObject.SetActive(true);
+        pauseMenu.gameObject.SetActive(true);
         
     }
 

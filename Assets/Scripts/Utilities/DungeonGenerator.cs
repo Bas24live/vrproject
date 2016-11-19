@@ -498,7 +498,7 @@ public class DungeonGenerator : MonoBehaviour{
 	[Range(0, 100)]
 	public	int overlayChance = 50;
 	
-	public	bool doors1x1Allowed = false;		//only add roomn if 2x2 door can be placed	
+	public	bool doors1x1Allowed = true;		//only add roomn if 2x2 door can be placed	
 	public	bool doors2x2Allowed = false;		//search for potential doors with length 2 where possible
 	
 	private	int currentRoom;
@@ -2270,7 +2270,7 @@ public class DungeonGenerator : MonoBehaviour{
 		public IntVector2 MapSize;					//The size of the map		
 		
 		[Header("Cave Cleaning")]	
-		public int LowerLimit			=    16;	//Remove rooms smaller than this value
+		public int LowerLimit			=    6;	//Remove rooms smaller than this value
 		public int UpperLimit			=   500;	//Remove rooms larger than this value
 		public int EmptyNeighbours		=     3;	//Removes single cells from cave edges: a cell with this number of empty neighbours is removed
 		public int EmptyCellNeighbours	=     4;	//Fills in holes within caves: an open cell with this number closed neighbours is filled
@@ -2852,9 +2852,8 @@ public class DungeonGenerator : MonoBehaviour{
 		}
 
 		#endregion
-	//}	
 	
-	#endregion
+	    #endregion
 	
 		
 	
