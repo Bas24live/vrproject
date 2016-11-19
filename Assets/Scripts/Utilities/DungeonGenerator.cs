@@ -227,10 +227,8 @@ public class DungeonGenerator : MonoBehaviour{
 
 		PerformanceMeter.AddLog("Finished<"+printAbleSeed+">, Attempts:["+placeAttempt+","+graphAttempt+","+portalAttempt+"]");		
 		PerformanceMeter.AddLog("");		
-		UpdateMap(ref _dungeon);		
 		
-		//Color Path for debugging
-		ColorRoomDungeonSolutionPath( path );		
+				
 		
 		//ToggleMap();
 		
@@ -770,40 +768,7 @@ public class DungeonGenerator : MonoBehaviour{
 		return longestPath;
 	}
 	
-	private void ColorRoomDungeonSolutionPath(RoomTemplateDungeonPath path){
-		
-		if(placedRooms.Count < 2) {return;}
-
-		//color rooms
-		foreach(Room room in placedRooms){
-			
-			//Debug: different color for each room
-			//ColorRoomOnMap(room, new Color(Random.Range(0F,1F),Random.Range(0F,1F),Random.Range(0F,1F),1F), 0.5F);continue;
-						
-			if		( room == path.rooms[0]){						//Entrance
-				ColorRoomOnMap(room, Color.cyan, 0.3F);
-			}else if( room == path.rooms[path.rooms.Count-1]){		//Exit
-				ColorRoomOnMap(room, Color.red, 0.3F);
-			}else if( path.rooms.Contains(room) ){	//Main Path
-				ColorRoomOnMap(room, Color.blue, 0.3F);
-			}else{											//Sidetrack
-				ColorRoomOnMap(room, Color.black, 0.3F);
-			}
-		}
-		
-		/*		
-		//print path	
-		Door prev = null;
-		foreach(Door door in longestPath.doors){
-			if(prev != null){				
-				PrintLineOnMap(prev.owner.x +prev.x, prev.owner.y +prev.y, door.owner.x +door.x, door.owner.y +door.y, Color.green, 0.25F);
-			}
-			prev = door;
-		}
-		*/
 	
-		mapTexture.Apply();
-	}
 	
 	//create Edge to other doors in the same room
 	private void CreateDoorEdgesWithinRoom(Room room){
@@ -1667,7 +1632,6 @@ public class DungeonGenerator : MonoBehaviour{
 			_streamLineCorridors();
 		}
 		
-		MultiplyDungeon(2);	mapPxPerTile = 2F;
 		
 		PerformanceMeter.EndTimeLog();		
 		PerformanceMeter.AddLog("");
@@ -1677,7 +1641,6 @@ public class DungeonGenerator : MonoBehaviour{
 		dungeon.entrance	= FindFloorInDungeon(dungeon);
 		dungeon.entranceSet	= true;
 		
-		UpdateMap(ref _dungeon);
 		//UpdateMap(ref _regions);
 		
 		return dungeon;		
@@ -2208,8 +2171,6 @@ public class DungeonGenerator : MonoBehaviour{
 		dungeon.entrance	= FindFloorInDungeon(dungeon);
 		dungeon.entranceSet	= true;
 		
-		UpdateMap(ref _dungeon);
-		
 		return dungeon;	
 	}
 		
@@ -2285,7 +2246,6 @@ public class DungeonGenerator : MonoBehaviour{
 		dungeon.entrance	= FindFloorInDungeon(dungeon);
 		dungeon.entranceSet	= true;
 		
-		UpdateMap(ref _dungeon);
 		
 		return dungeon;	
 	}
@@ -2897,261 +2857,6 @@ public class DungeonGenerator : MonoBehaviour{
 	#endregion
 	
 		
-	#region MAP
 	
-	[Header("	Map")]
-	
-	public	Image		mapImage;
-	[HideInInspector]	public	Texture2D	mapTexture;
-	public	Canvas		canvas;	
-		
-	//create map
-	private void CreateMap(){
-		
-		if(mapImage){return;}	//if already created, leave, update is enough
-		
-		//requires Canvas			
-		//create new SpriteGameObject in UI
-		GameObject mapGO	= new GameObject();
-		mapGO.name			= "MapObject";						//give it a name
-		mapGO.layer			= LayerMask.NameToLayer("UI");		//culling layer, if needed
-		
-		RectTransform sRect		= mapGO.AddComponent<RectTransform>();	//add a rect Transform to replace the normal Transform
-		
-		//Assign in Editor now//Canvas canvas = (Canvas)FindObjectOfType(typeof(Canvas));		
-		//if (!canvas){print("No Canvas found, Map will not be drawn"); return;}
-		
-		sRect.SetParent(canvas.gameObject.transform, false);									//make the image Object the new parent, so this will move with it		
-		
-		mapImage = mapGO.AddComponent<Image>();	//Add a sprite Renderer to the new Object	
-		mapImage.enabled = false;
-		
-		mapTexture = new Texture2D(1, 1, TextureFormat.RGBA32, false );
-		mapTexture.filterMode = FilterMode.Point;
-		
-		
-		//Add Button to Map to toggle region view
-		if(addMapToggle){
-			Button b = mapImage.gameObject.AddComponent<Button>();
-			b.onClick.AddListener(()	=>	{
-				ToggleMap();			
-			});
-		}
-	}
-		
-	//update map by region grid
-	private void UpdateMap(ref int[,] grid){
-		
-		if(mapTexture == null){return;}
-		
-		int xSize = grid.GetLength(0);
-		int ySize = grid.GetLength(1);
-		
-		mapTexture.Resize(xSize, ySize, TextureFormat.RGBA32, false );
-		mapTexture.Apply();
-		
-		//generate random Colors
-		Dictionary<int, Color> colors = new Dictionary<int, Color>();
-		for(int x = 0; x < xSize; x++){		
-			for(int y = 0; y < ySize; y++){
-				if(!colors.ContainsKey(grid[x,y])){
-					colors.Add(grid[x,y], new Color(Random.Range(0F,1F),Random.Range(0F,1F),Random.Range(0F,1F)) );
-				}
-			}
-		}
-				
-		for(int x = 0; x < xSize; x++){		
-			for(int y = 0; y < ySize; y++){
-				mapTexture.SetPixel(x, y, grid[x,y] == -1? Color.black:colors[grid[x,y]]);
-				
-				//special Debug case, -100
-				if(grid[x,y] == -100)mapTexture.SetPixel(x, y, Color.white);
-			}
-		}
-		
-		mapTexture.Apply();
-		RefreshMap(new Vector2(xSize, ySize));		
-	}
-	
-	//update map by Tilegrid
-	public void UpdateMap(ref Tile[,] grid){
-		int xSize = grid.GetLength(0);
-		int ySize = grid.GetLength(1);
-		
-		mapTexture.Resize(xSize, ySize, TextureFormat.RGBA32, false );
-		mapTexture.Apply();
-		
-		for(int x = 0; x < xSize; x++){		
-			for(int y = 0; y < ySize; y++){
-				switch(grid[x,y]){
-					default:				mapTexture.SetPixel(x, y, Color.clear);		break;
-					case Tile.Floor:		mapTexture.SetPixel(x, y, Color.grey);		break;
-					case Tile.RoomFloor:	mapTexture.SetPixel(x, y, Color.white);		break;
-					case Tile.Wall:			mapTexture.SetPixel(x, y, Color.black);		break;
-					case Tile.Door:			mapTexture.SetPixel(x, y, Color.magenta);	break;
-					
-					//DEBUG for room Template Dungeon
-					case Tile.DoorNorth:	mapTexture.SetPixel(x, y, Color.yellow);	break;
-					case Tile.DoorEast:		mapTexture.SetPixel(x, y, Color.blue);		break;
-					case Tile.DoorSouth:	mapTexture.SetPixel(x, y, Color.green);		break;
-					case Tile.DoorWest:		mapTexture.SetPixel(x, y, Color.cyan);		break;
-				}
-			}
-		}
-		
-		mapTexture.Apply();
-		RefreshMap(new Vector2(xSize, ySize));
-	}
-	
-	//http://wiki.unity3d.com/index.php?title=TextureDrawLine
-	private void PrintLineOnMap(int x0, int y0, int x1, int y1, Color color, float blendFactor){
-		int dy = (int)(y1-y0);
-		int dx = (int)(x1-x0);
-		int stepx, stepy;
-	
-		if(dy < 0)	{dy = -dy; stepy = -1;}
-		else		{stepy = 1;}
-		if(dx < 0)	{dx = -dx; stepx = -1;}
-		else		{stepx = 1;}
-		dy <<= 1;
-		dx <<= 1;
-	
-		float fraction = 0;
-	
-		BlendMapPixel(x0, y0, color, blendFactor);
-		if (dx > dy) {
-			fraction = dy - (dx >> 1);
-			while (Mathf.Abs(x0 - x1) > 1) {
-				if (fraction >= 0) {
-					y0 += stepy;
-					fraction -= dx;
-				}
-				x0 += stepx;
-				fraction += dy;
-				BlendMapPixel(x0, y0, color, blendFactor);
-			}
-		}else{
-			fraction = dx - (dy >> 1);
-			while (Mathf.Abs(y0 - y1) > 1) {
-				if (fraction >= 0) {
-					x0 += stepx;
-					fraction -= dy;
-				}
-				y0 += stepy;
-				fraction += dx;
-				BlendMapPixel(x0, y0, color, blendFactor);
-			}
-		}				
-		
-		mapTexture.Apply();
-	}
-	
-	public	void ColorRoomOnMap(Room room, Color color, float blendFactor){
-		int xSize = room.tiles.GetLength(0);
-		int ySize = room.tiles.GetLength(1);		
-		for(int x = 0; x < xSize; x++){
-			for(int y = 0; y < ySize; y++){
-				if( room.tiles[x,y] == Tile.Floor){
-					BlendMapPixel(x +room.x, y +room.y, color, blendFactor);
-				}
-			}
-		}
-	}
-	
-	public	void SetMapPixel(int x, int y, Color color){
-		mapTexture.SetPixel(x, y, color);
-	}
-	
-	public	void BlendMapPixel(int x, int y, Color color, float factor){
-		Color color1 = mapTexture.GetPixel(x,y);
-		mapTexture.SetPixel(x, y, Color.Lerp(color1, color, factor));
-	}
-	
-	public	Color GetMapPixel(int x, int y){
-		return mapTexture.GetPixel(x,y);
-	}
-	
-	public bool showMap = true;
-	
-	private float mapPxPerTile = 1F;
-	private	void RefreshMap(Vector2 sizePx){
-		
-		//keep order of this changes:		
-		mapImage.rectTransform.anchorMin		= new Vector2(1F,0F);
-		mapImage.rectTransform.anchorMax		= new Vector2(1F,0F);
-		mapImage.rectTransform.pivot			= new Vector2(1F,0F);
-		mapImage.rectTransform.offsetMin		= Vector2.zero;
-		mapImage.rectTransform.offsetMax		= sizePx *mapPxPerTile;	//1 tile = 2x2 px
-		mapImage.rectTransform.anchoredPosition	= new Vector2(-3,+3);//small dist from corner	
-		
-		Sprite sprite	= Sprite.Create( mapTexture, new Rect(0, 0, mapTexture.width, mapTexture.height), new Vector2(0.5F, 0.5F));		
-		mapImage.sprite	= sprite;
-		mapImage.enabled = showMap;
-	}
-	
-	private bool regView = false;
-	public	void ToggleMap(){
-		regView = !regView;
-		if(regView){
-			UpdateMap(ref _regions);
-		}else{
-			UpdateMap(ref _dungeon);
-		}
-	}
-	
-	//gridX/Y is the gameUnit dimension of your Tile, made for top-down default = XZ-Plane
-	public	void ShowTransformOnMap(Transform actor, float gridX, float gridY, float? mapOrigX = null, float? mapOrigY = null){
-		
-		float offX = mapOrigX	?? default(float);
-		float offY = mapOrigY	?? default(float);
-		
-		StartCoroutine(ShowOnMap(actor, gridX, gridY, offX, offY));
-	}
-	
-	public	int actorPosX = 0;
-	public	int actorPosY = 0;
-	private	bool mapPointerActive = false;
-	
-	private	IEnumerator ShowOnMap(Transform actor, float gridX, float gridY, float mapOffX, float mapOffY){		
-		
-		if(mapPointerActive){mapPointerActive = false; yield return null;}	//finish current coroutine
-		
-		//print(mapOffX+"|"+mapOffY);
-		
-		mapPointerActive = true;
-		
-		bool firstEnter = true;	//don't color pixel on enter, we would color 0/0
-		Color prevColor	= Color.yellow;
-				
-		while(mapPointerActive){
-			
-			int actorPixelX = (int)(Mathf.Round( (actor.position.x -mapOffX)/gridX ));
-			int actorPixelY = (int)(Mathf.Round( (actor.position.z -mapOffY)/gridY ));
-			
-			//print(actorPixelX+"|"+actorPixelY);
-			
-			//only update if needed
-			if(actorPosX != actorPixelX || actorPosY != actorPixelY){				
-				
-				if(firstEnter){
-					firstEnter = false;
-				}else{
-					SetMapPixel(actorPosX, actorPosY, prevColor);			//resetPrevious Pixel
-					BlendMapPixel(actorPosX, actorPosY, Color.green, 0.3F);	//add trail tp prev
-				}
-				
-				actorPosX = actorPixelX;
-				actorPosY = actorPixelY;
-				
-				prevColor = GetMapPixel(actorPosX, actorPosY);
-				SetMapPixel(actorPosX, actorPosY, Color.red);//Highlight Map
-					
-				mapTexture.Apply();
-												
-			}
-			yield return null;
-		}
-	}	
-	#endregion
 	
 }

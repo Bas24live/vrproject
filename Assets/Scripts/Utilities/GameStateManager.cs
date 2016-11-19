@@ -12,13 +12,13 @@ public class GameStateManager : MonoBehaviour {
 
     void Awake()
     {
-        dynBlockPrefab = GameObject.FindWithTag("Wall_Inner").transform;
-        DungeonGenerator.instance.GenerateHauberkDungeon(23, 23);
-        GenerateByGrid(DungeonGenerator._dungeon);
+        dynBlockPrefab = GameObject.FindWithTag("Wall_Inner").transform;        
     }
 
     void Start() {
         paused = false;
+        DungeonGenerator.instance.GenerateHauberkDungeon(23, 23);
+        GenerateByGrid(DungeonGenerator._dungeon);
     }
 
     public void GenerateByGrid(Tile[,] grid)
@@ -59,7 +59,7 @@ public class GameStateManager : MonoBehaviour {
     private void CreateBlock(Vector3 pos)
     {
         GameObject block = Instantiate(dynBlockPrefab, pos, Quaternion.identity) as GameObject;
-        block.transform.parent = mapParent;
+        //block.transform.parent = mapParent;
     }
 
     void Update () {
@@ -71,7 +71,6 @@ public class GameStateManager : MonoBehaviour {
         else
             Resume();
 	}
-
 
     public void Resume() {
         paused = false;
