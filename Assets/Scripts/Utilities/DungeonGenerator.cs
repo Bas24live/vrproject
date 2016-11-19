@@ -70,6 +70,7 @@ public class DungeonGenerator : MonoBehaviour{
 	public	static DungeonGenerator instance;
 		
 	public	static	Tile[,]	_dungeon;	//2D-Array that stores the current type of a tile
+    public static List<Rect> _rooms; // List containing integer arrays to define the coordinates of the bounds of every room in order: {lowX, lowY, highX, highY}
 	public	static	int[,]	_regions;	//2D-Array
 	
 	public	int _dungeonWidth	= 81;
@@ -1548,7 +1549,7 @@ public class DungeonGenerator : MonoBehaviour{
 	public	int windingPercent			= 20;					//chance a maze will make a turn which will make it more winding
 	public	bool tryRoomsFirst			= false;				//try to make room-to-room connections before making corridor-to-room connections (corridor-to-corridor are impossible)
 	public	bool streamLine				= true;				//streamline corridors between branchpoints and doors
-	private	List<Rect> _rooms;									//list of placed rooms
+	//private	List<Rect> _rooms;									//list of placed rooms
 	private int _currentRegion = -1;							// The index of the current region (=connected carved area) being carved, -1 = default, wall
 	
 	public List<IntVector2> cardinal;	//original implementation of Hauberk used Direction.CARDINAL	
