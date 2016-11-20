@@ -70,12 +70,13 @@ public class DungeonGenerator : MonoBehaviour{
 	public	static DungeonGenerator instance;
 		
 	public	static	Tile[,]	_dungeon;	//2D-Array that stores the current type of a tile
+    public static List<Rect> _rooms; // List containing integer arrays to define the coordinates of the bounds of every room in order: {lowX, lowY, highX, highY}
 	public	static	int[,]	_regions;	//2D-Array
 	
 	public	int _dungeonWidth	= 81;
 	public	int _dungeonHeight	= 41;
 	
-	public	bool _randomSeedOn = false;
+	public	bool _randomSeedOn = true;
 	public	int  _seed;					//random seed for map generation
 	
 	public	bool addMapToggle = true;	//toggle mapview between _regions and _dungeon
@@ -143,13 +144,13 @@ public class DungeonGenerator : MonoBehaviour{
 		
 		int printAbleSeed = 000;	//smaller memorizeable seed for debugging
 
-		if(_randomSeedOn)	{	Random.seed = this._seed;	}
+		if(_randomSeedOn)	{	Random.InitState(this._seed);	}
 		else				{
 		//	create random base seed to make it visible for debugging			
 		//	printAbleSeed = Random.Range(int.MinValue,int.MaxValue);	//full range
 			printAbleSeed = Random.Range(0,999);						//Debug: 3 digits, easier to remember
 			print ("Level Seed: <"+printAbleSeed+">");
-			Random.seed = printAbleSeed;
+            Random.InitState(printAbleSeed);
 		}
 		
 		
@@ -1548,7 +1549,7 @@ public class DungeonGenerator : MonoBehaviour{
 	public	int windingPercent			= 20;					//chance a maze will make a turn which will make it more winding
 	public	bool tryRoomsFirst			= false;				//try to make room-to-room connections before making corridor-to-room connections (corridor-to-corridor are impossible)
 	public	bool streamLine				= true;				//streamline corridors between branchpoints and doors
-	private	List<Rect> _rooms;									//list of placed rooms
+	//private	List<Rect> _rooms;									//list of placed rooms
 	private int _currentRegion = -1;							// The index of the current region (=connected carved area) being carved, -1 = default, wall
 	
 	public List<IntVector2> cardinal;	//original implementation of Hauberk used Direction.CARDINAL	
@@ -1593,8 +1594,8 @@ public class DungeonGenerator : MonoBehaviour{
 		this.streamLine				= streamLine			?? this.streamLine;
 		this._seed					= seed					?? this._seed;
 		
-		if(_randomSeedOn || seed != null){	//use random seed if overlaod was used, or if it is enabled in general
-			Random.seed = this._seed;
+		if(_randomSeedOn || seed != null){  //use random seed if overlaod was used, or if it is enabled in general
+            Random.InitState(this._seed);
 		}					
 		//init grids
 		_dungeon		= new Tile[_dungeonWidth, _dungeonHeight];
@@ -2220,7 +2221,7 @@ public class DungeonGenerator : MonoBehaviour{
 		this._seed					= seed					?? this._seed;
 		
 		if(_randomSeedOn || seed != null){	//use random seed if overlaod was used, or if it is enabled in general
-			Random.seed = this._seed;
+			Random.InitState(this._seed);
 		}	
 		
 		this.MapSize = new IntVector2(_dungeonWidth, _dungeonHeight);		
