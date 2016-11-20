@@ -3,21 +3,15 @@ using System.Collections;
 
 public interface IEnemyState {
 
-    void UpdateState();
+    void UpdateState ();
 
-    void OnTriggerEnter(Collider collider);
+    void OnTriggerEnter (Collider collider);
 
-    void ToPatrolState();
+    void ToAlertState ();
 
-    void ToChaseState();
+    void ToLasKnownPositionState ();
 
-    void ToAlertState();
+    void ToSearchingState ();
 
-    void ToLasKnownPositionState();
-
-    void ToSearchingState();
-
-    void ToBlockingState();
-
-    void ToDeathState();
+    void ToDeathState ();
 }

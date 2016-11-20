@@ -2,12 +2,12 @@
 using System.Collections;
 using System;
 
-public class AlertState : IEnemyState {
+public class SeekerAlertState : ISeekerState {
 
-    private readonly StatePatternEnemy enemy;
+    private readonly StatePatternSeeker enemy;
     private float searchTimer;
 
-    public AlertState(StatePatternEnemy statePatternEnemy) {
+    public SeekerAlertState(StatePatternSeeker statePatternEnemy) {
         enemy = statePatternEnemy;
     }
 
@@ -21,20 +21,20 @@ public class AlertState : IEnemyState {
     }
 
     public void ToAlertState() {
-        Debug.Log("Can't transition to same state");
+        //Current State
     }
 
     public void ToChaseState() {
         enemy.currentState = enemy.chaseState;
         searchTimer = 0f;
-        ToBlockingState();
     }
 
     public void ToSearchingState() {
-        enemy.currentState = enemy.searchingState;
+        enemy.currentState = enemy.seekerSearchingState;
     }
 
     public void ToLasKnownPositionState() {
+        EventManager.TriggerEvent("LastKnownPosition");
     }
 
     public void ToDeathState() {
@@ -56,17 +56,11 @@ public class AlertState : IEnemyState {
 
     void Alert() {
         enemy.visionDisplay.color = new Color(253, 246, 0);
-        //enemy.navMeshAgent.Stop();
 
-        enemy.transform.Rotate(0, enemy.searchingTurnSpeed * Time.deltaTime, 0);
+        //enemy.rb.MoveRotation(0, enemy.searchingTurnSpeed * Time.deltaTime, 0);
         searchTimer += Time.deltaTime;
 
         if (searchTimer >= enemy.searchingDuration)
             ToPatrolState();
-    }
-
-    public void ToBlockingState()
-    {
-        EventManager.TriggerEvent("Block");
     }
 }

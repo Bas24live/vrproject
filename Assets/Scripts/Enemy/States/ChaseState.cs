@@ -4,10 +4,10 @@ using System;
 
 public class ChaseState : IEnemyState {
 
-    private readonly StatePatternEnemy enemy;
+    private readonly StatePatternSeeker enemy;
     private bool callForBlockHelp = true;
 
-    public ChaseState(StatePatternEnemy statePatternEnemy) {
+    public ChaseState(StatePatternSeeker statePatternEnemy) {
         enemy = statePatternEnemy;
     }
 
@@ -24,7 +24,7 @@ public class ChaseState : IEnemyState {
     }
 
     public void ToAlertState() {
-        enemy.currentState = enemy.alertSate;
+        enemy.currentState = enemy.seekerAlertState;
     }
 
     public void ToChaseState() {
@@ -32,7 +32,7 @@ public class ChaseState : IEnemyState {
     }
 
     public void ToSearchingState() {
-        enemy.currentState = enemy.searchingState;
+        enemy.currentState = enemy.seekerSearchingState;
     }
 
     public void ToDeathState() {

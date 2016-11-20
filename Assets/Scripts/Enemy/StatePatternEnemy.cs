@@ -23,22 +23,13 @@ public class StatePatternEnemy : MonoBehaviour {
     [HideInInspector] public Vector3 thrownVelocity;
 
     [HideInInspector] public IEnemyState currentState;
-    [HideInInspector] public PatrolState patrolState;
-    [HideInInspector] public AlertState alertSate;
-    [HideInInspector] public ChaseState chaseState;
-    [HideInInspector] public BlockingState blockingState;
+    [HideInInspector] public IEnemyState defaultState;
     [HideInInspector] public LastKnownPositionState lastKnownPositionState;
-    [HideInInspector] public SearchingState searchingState;
     [HideInInspector] public DeathState deathState;
 
 
     private void Awake() {  
-        patrolState = new PatrolState(this);
-        alertSate = new AlertState(this);
-        chaseState = new ChaseState(this);
         lastKnownPositionState = new LastKnownPositionState(this);
-        searchingState = new SearchingState(this);
-        blockingState = new BlockingState(this);
         deathState = new DeathState(this);
 
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -47,7 +38,7 @@ public class StatePatternEnemy : MonoBehaviour {
     }
 
 	void Start () {
-        currentState = patrolState;
+        currentState = defaultState;
 	}
 	
 	void Update () {
@@ -55,17 +46,15 @@ public class StatePatternEnemy : MonoBehaviour {
 	}
 
     private void OnTriggerEnter(Collider collider) {
-        currentState.OnTriggerEnter(collider);
+        if (collider.gameObject.CompareTag("Player"))
+            currentState = defaultState;
+        else
+            currentState.OnTriggerEnter(collider);
     }
 
     public void LastKnownPosition() {
         lastKnownPos = player.transform.position;
         if (currentState != deathState)
             currentState = lastKnownPositionState;
-    }
-
-    public void Block() {
-        if (currentState != chaseState)
-            currentState = blockingState;
     }
 }

@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System;
 
-public class SearchingState : IEnemyState {
+public class SeekerSearchingState : ISeekerState {
 
-    private readonly StatePatternEnemy enemy;
+    private readonly StatePatternSeeker enemy;
     private Vector3[] destinations;
     private int destIndex;
     private bool newDestinations = true;
 
-    public SearchingState(StatePatternEnemy statePatternEnemy) {
-        enemy = statePatternEnemy;
+    public SeekerSearchingState(StatePatternSeeker statePatternSeeker) {
+        enemy = statePatternSeeker;
         destinations = new Vector3[4];
         destIndex = 0;
     }
@@ -28,7 +28,7 @@ public class SearchingState : IEnemyState {
     public void ToAlertState() {
         destIndex = 0;
         newDestinations = true;
-        enemy.currentState = enemy.alertSate;
+        enemy.currentState = enemy.seekerAlertState;
     }
 
     public void ToChaseState() {
