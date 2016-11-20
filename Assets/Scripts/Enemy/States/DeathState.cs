@@ -22,8 +22,6 @@ public class DeathState : IEnemyState {
     }
 
     public void ToAlertState() {
-        Debug.Log("From death to alert");
-        enemy.currentState = enemy.alertSate;
     }
 
     public void ToChaseState() {

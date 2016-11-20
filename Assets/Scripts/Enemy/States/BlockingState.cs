@@ -2,10 +2,10 @@
 using System.Collections;
 using System;
 
-public class BlockingState : IEnemyState {
-    private readonly StatePatternEnemy enemy;
+public class BlockingState : IBlockerState {
+    private readonly StatePatternBlocker enemy;
 
-    public BlockingState(StatePatternEnemy statePatternEnemy)
+    public BlockingState(StatePatternBlocker statePatternEnemy)
     {
         enemy = statePatternEnemy;
     }
@@ -28,17 +28,8 @@ public class BlockingState : IEnemyState {
 
     }
 
-    public void ToChaseState() {
-        enemy.currentState = enemy.chaseState;
-    }
-
     public void ToLasKnownPositionState() {
         EventManager.TriggerEvent("LastKnownPosition");
-    }
-
-    public void ToPatrolState()
-    {
-        enemy.currentState = enemy.patrolState;
     }
 
     public void ToSearchingState() {
@@ -52,7 +43,6 @@ public class BlockingState : IEnemyState {
         RaycastHit hit;
         if (Physics.Raycast(enemy.eyes.transform.position, enemy.eyes.transform.forward, out hit, enemy.sightRange) && hit.collider.CompareTag("Player")) {
             enemy.chaseTarget = hit.transform;
-            ToChaseState();
         }
     }
 
@@ -64,8 +54,5 @@ public class BlockingState : IEnemyState {
         if (NavMesh.SamplePosition(position, out hit, enemy.distanceAhead, NavMesh.AllAreas)) {
             enemy.navMeshAgent.destination = hit.position;
         }
-
-        //enemy.navMeshAgent.Resume();
-
     }
 }

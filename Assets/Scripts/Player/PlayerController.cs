@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-    public float movementSpeed = 4, speedDampening = 2, rotationSpeed = 3;
+    public float movementSpeed = 15, speedDampening = 2, rotationSpeed = 1.5f;
     public float grabDistance = 2, pushDistance = 2, throwForce = 20;
 
     enum Direction { XPOS, XNEG, ZPOS, ZNEG };
@@ -56,8 +56,9 @@ public class PlayerController : MonoBehaviour {
             else
                 position = new Vector3(0, position.y, position.z);
 
-        movement += position * movementSpeed * Time.deltaTime;
-        playerRb.MovePosition(transform.position + movement);
+        //movement += position * movementSpeed * Time.deltaTime;
+        movement = position * movementSpeed;
+        playerRb.AddForce(movement);
     }
 
     public void RotateTo(Vector3 rotation) {

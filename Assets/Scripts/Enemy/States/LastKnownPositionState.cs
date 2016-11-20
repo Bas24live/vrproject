@@ -18,11 +18,11 @@ public class LastKnownPositionState : IEnemyState {
     }
 
     public void ToAlertState() {
-        enemy.currentState = enemy.alertSate;
+        //enemy.currentState = enemy.alertSate;
     }
 
     public void ToChaseState() {
-        enemy.currentState = enemy.chaseState;
+        //enemy.currentState = enemy.chaseState;
         ToBlockingState();
     }
 
@@ -31,7 +31,7 @@ public class LastKnownPositionState : IEnemyState {
     }
 
     public void ToSearchingState() {
-        enemy.currentState = enemy.searchingState;
+        //enemy.currentState = enemy.searchingState;
     }
 
     public void ToDeathState() {

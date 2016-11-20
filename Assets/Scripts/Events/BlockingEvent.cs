@@ -4,11 +4,11 @@ using System.Collections;
 
 public class BlockingEvent : MonoBehaviour {
     UnityAction blockingStateListener;
-    StatePatternEnemy enemy;
+    StatePatternBlocker enemy;
 
     void Awake() {
         blockingStateListener = new UnityAction(Block);
-        enemy = this.GetComponent<StatePatternEnemy>();
+        enemy = GetComponent<StatePatternBlocker>();
     }
 
     void OnEnable() {
@@ -20,6 +20,6 @@ public class BlockingEvent : MonoBehaviour {
     }
 
     void Block() {
-        enemy.Block();
+        //enemy.Block();
     }
 }
