@@ -105,6 +105,9 @@ public class PlayerController : MonoBehaviour {
                     pushedObjectRb = null;
                 }
             }
+            else if (Physics.Raycast(transform.position, transform.forward, out hit, grabDistance) && hit.collider.CompareTag("Switch")) {
+
+            }
         }
     }
 
