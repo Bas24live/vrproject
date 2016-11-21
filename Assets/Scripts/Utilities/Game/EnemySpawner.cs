@@ -10,8 +10,6 @@ public class EnemySpawner : MonoBehaviour {
     void Start () {
         DungeonGenerator.instance.GenerateHauberkDungeon();
         enemiesContainer = new GameObject("Enemies");
-        
-        
     }
 
     public void SpawnSeekers() {

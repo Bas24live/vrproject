@@ -4,20 +4,32 @@ public class SwitchSystem : MonoBehaviour {
 
     public GameObject switchPrefab;
     public GameObject exitPrefab;
+    public GameObject worldContainer;
     public int minRoomSize = 4, maxRoomSize = 8;
 
     GameObject switchContainer;
+    string switchContainerName = "Switches";
     int numSwitches, activeSwitches;
     bool openExit;
 
+    void Awake() {
+        worldContainer = GameObject.FindGameObjectWithTag("World");
+    }
+
     void Start() {
-        switchContainer = new GameObject("Switches");
         activeSwitches = 0;
         numSwitches = 0;
         openExit = false;
     }
 
-    public void PlaceSwitches() {      
+    public void PlaceSwitches() {
+        if (worldContainer.transform.FindChild(switchContainerName)) {
+            Destroy(switchContainer);
+        }
+
+        switchContainer = new GameObject("Switches");
+        switchContainer.transform.SetParent(worldContainer.transform);
+
         foreach (Rect r in DungeonGenerator._rooms) {
 
             int mapXSize = DungeonGenerator._dungeon.GetLength(0)/2;
