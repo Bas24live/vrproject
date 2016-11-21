@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-    public float movementSpeed = 15, speedDampening = 2, rotationSpeed = 1.5f;
+    public float movementSpeed = 5, speedDampening = 2, rotationSpeed = 1.5f;
     public float grabDistance = 2, pushDistance = 2, throwForce = 20;
 
     enum Direction { XPOS, XNEG, ZPOS, ZNEG };
@@ -10,36 +10,40 @@ public class PlayerController : MonoBehaviour {
 
     GameObject pushedObject;
     Rigidbody playerRb, pushedObjectRb;
-    Vector3 movement, rotation;
+    Vector3 movement, velocity, rotation;
 
     bool pushing;
     float rotMinClamp, rotMaxClamp;
 
-    // Use this for initialization
-    void Start() {
+    void Awake () {
         playerRb = GetComponent<Rigidbody>();
+    }
+    
+    void Start() {
+        
         pushing = false;
+        rotation = Vector3.zero;
+        velocity = Vector3.zero;
+        movement = Vector3.zero;
     }
 
-    // Physics calculations
-    void FixedUpdate () {
-        float yAxisRotation = Input.GetAxis("Mouse X");
+    void Update () {
+        velocity = Vector3.zero;
 
-        RotateTo(new Vector3(0, yAxisRotation, 0) * rotationSpeed);
-        movement = Vector3.zero;
+        float yAxisRotation = Input.GetAxisRaw("Mouse X");
+        rotation = new Vector3(0, yAxisRotation, 0) * rotationSpeed;
 
         if (Input.GetKey(KeyCode.W))
-            MoveTo(transform.forward);
+            MoveTo(transform.forward.normalized);
         if (Input.GetKey(KeyCode.S))
-            MoveTo(-transform.forward);
+            MoveTo(-transform.forward.normalized);
         if (Input.GetKey(KeyCode.D))
-            MoveTo(transform.right);
+            MoveTo(transform.right.normalized);
         if (Input.GetKey(KeyCode.A))
-            MoveTo(-transform.right);
+            MoveTo(-transform.right.normalized);
 
         if (pushing) {
             Pushing();
-
             if (Input.GetKeyDown(KeyCode.E))
                 Leave();
         }
@@ -47,25 +51,23 @@ public class PlayerController : MonoBehaviour {
             TryPush();
     }
 
-    //.........................................Move Player Methods.........................................//
-
-    public void MoveTo(Vector3 position) {     
-        if (pushing)
-            if (playerDirection == Direction.XPOS || playerDirection == Direction.XNEG)
-                position = new Vector3(position.x, position.y, 0);
-            else
-                position = new Vector3(0, position.y, position.z);
-
-        //movement += position * movementSpeed * Time.deltaTime;
-        movement = position * movementSpeed;
-        playerRb.AddForce(movement);
+    void FixedUpdate () {       
+        playerRb.MoveRotation(Quaternion.Euler(playerRb.rotation.eulerAngles + rotation * Time.fixedDeltaTime));
+        playerRb.MovePosition(playerRb.position + velocity * Time.fixedDeltaTime);
     }
 
-    public void RotateTo(Vector3 rotation) {
-        //if (pushing)
-          //  rotation = new Vector3(0, Mathf.Clamp(rotation.y, rotMinClamp, rotMaxClamp), 0);
+    //.........................................Move Player Methods.........................................//
 
-        playerRb.MoveRotation(Quaternion.Euler(playerRb.rotation.eulerAngles + rotation));
+    public void MoveTo(Vector3 direction) {     
+        if (pushing)
+            if (playerDirection == Direction.XPOS || playerDirection == Direction.XNEG)
+                movement = new Vector3(direction.x, direction.y, 0);
+            else
+                movement = new Vector3(0, direction.y, direction.z);
+        else
+            movement = direction;
+
+        velocity = (velocity.normalized + movement) * movementSpeed;
     }
 
     void Reposition() {
@@ -74,14 +76,10 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 newPos;
 
-        if (playerDirection == Direction.XPOS || playerDirection == Direction.XNEG) {
+        if (playerDirection == Direction.XPOS || playerDirection == Direction.XNEG)
             newPos = new Vector3(transform.position.x, transform.position.y, pushedPosZ);
-            //pushDistance = grabDistance - Mathf.Abs(Mathf.Abs(pushedPosX) - Mathf.Abs(newPos.x));
-        }
-        else {
+        else
             newPos = new Vector3(pushedPosX, transform.position.y, transform.position.z);
-            //pushDistance = grabDistance - Mathf.Abs(Mathf.Abs(pushedPosZ) - Mathf.Abs(newPos.z));
-        }
 
         playerRb.MovePosition(newPos);
     }

@@ -11,6 +11,12 @@ public class GameStateManager : MonoBehaviour {
     public GameObject pauseMenu;
     public GameObject blockPrefab;
     public GameObject floorPrefab;
+    public GameObject switchPrefab;
+
+    EnemySpawner enemySpawner;
+
+    int ActiveSwitches, inactiveSwitches;
+    int minRoomSize = 5, maxRoomSize = 8;
     
 
     bool paused;
@@ -18,12 +24,15 @@ public class GameStateManager : MonoBehaviour {
     void Awake() {   
         worldContainer = GameObject.FindGameObjectWithTag("World");
         playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
+        enemySpawner = GetComponent<EnemySpawner>();
     }
 
     void Start() {
         paused = false;
         DungeonGenerator.instance.GenerateHauberkDungeon();
         GenerateByGrid(DungeonGenerator._dungeon);
+        //enemySpawner.SpawnSeekers();
+        PlaceSwitches();
     }
 
     public void GenerateByGrid(Tile[,] grid)
@@ -55,6 +64,31 @@ public class GameStateManager : MonoBehaviour {
         floor.transform.localScale += new Vector3(.1f * (width / 2.5f), 0, .1f * (height / 2.5f));
 
         UnityEditor.NavMeshBuilder.BuildNavMesh();
+    }
+
+    void PlaceSwitches() {
+        GameObject switchContainer = new GameObject("Switches");
+
+        foreach (Rect r in DungeonGenerator._rooms) {
+            int xmin = (int)r.xMin;
+            int xmax = (int)r.xMax;
+            int zmin = (int)r.yMin;
+            int zmax = (int)r.yMax;
+
+            int xLength = (xmax - xmin) - 1;
+            int zLength = (zmax - zmin) - 1;
+
+            //if ((xLength >= minRoomSize && xLength <= maxRoomSize) && (zLength >= minRoomSize && zLength <= maxRoomSize)) {
+
+                Vector3 position = new Vector3(xmin + xLength / 2, 0.05f, zmin + zLength / 2);
+
+                SpawnGameObject(position, switchPrefab, switchContainer.transform);
+           // }
+        }
+    }
+
+    void SpawnGameObject (Vector3 position, GameObject gameObject, Transform parent) {
+        Instantiate(gameObject, position, gameObject.transform.rotation, parent);
     }
 
     void Update () {
