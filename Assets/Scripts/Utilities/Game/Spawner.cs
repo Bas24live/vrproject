@@ -41,7 +41,7 @@ public class Spawner : MonoBehaviour
         Vector2 pos = new Vector2();
         if (GetRoomCenter(ref pos, width, height))
         {
-            SpawnGameObject(new Vector3(pos.x, gameObject.transform.position.y, pos.y), gameObject, parent);
+            SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
         }        
     }
@@ -51,7 +51,7 @@ public class Spawner : MonoBehaviour
         Vector2 pos = new Vector2();
         if (GetRoomCenter(ref pos))
         {
-            SpawnGameObject(new Vector3(pos.x, gameObject.transform.position.y, pos.y), gameObject, parent);
+            SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
         }
     }
@@ -61,7 +61,7 @@ public class Spawner : MonoBehaviour
         Vector2 pos = new Vector2();
         if (GetRoom(ref pos, width, height))
         {
-            SpawnGameObject(new Vector3(pos.x, gameObject.transform.position.y, pos.y), gameObject, parent);
+            SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
         }        
     }
@@ -71,7 +71,7 @@ public class Spawner : MonoBehaviour
         Vector2 pos = new Vector2();
         if (GetRoom(ref pos))
         {
-            SpawnGameObject(new Vector3(pos.x, gameObject.transform.position.y, pos.y), gameObject, parent);
+            SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
         }
     }
@@ -164,7 +164,7 @@ public class Spawner : MonoBehaviour
         return tiles;
     }
 
-    private void SpawnGameObject(Vector3 position, GameObject gameObject, Transform parent) {
-        Instantiate(gameObject, position, gameObject.transform.rotation, parent);
+    private void SpawnGameObject(Vector2 pos, GameObject gameObject, Transform parent) {
+        Instantiate(gameObject, new Vector3(pos.x, gameObject.transform.position.y, pos.y), gameObject.transform.rotation, parent);
     }
 }
