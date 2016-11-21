@@ -14,6 +14,8 @@ public class GameStateManager : MonoBehaviour {
 
     EnemySpawner enemySpawner;
     SwitchSystem switchSystem;
+
+    int currentLevel = 0;
     bool paused;
 
     void Awake() {   
@@ -81,4 +83,11 @@ public class GameStateManager : MonoBehaviour {
         Time.timeScale = 0;
         pauseMenu.gameObject.SetActive(true);
     }
+
+    public void NextLevel() {
+        ++currentLevel;
+        
+    }
+
+
 }
