@@ -5,7 +5,7 @@ public class Collectible : MonoBehaviour {
     protected bool pickedUp = false;
 
     // Call the event when the player collides with the Collectible
-    public event System.Action<Collectible> PickedUpEvent;
+    public event System.Action<Collectible> PickupEvent;
 
     // Call the event when the player drops the Collectible
     public event System.Action<Collectible, Transform> DroppedEvent;
@@ -14,9 +14,9 @@ public class Collectible : MonoBehaviour {
     {
         this.pickedUp = false;
         gameObject.SetActive(false);
-        if (PickedUpEvent != null)
+        if (PickupEvent != null)
         {
-            PickedUpEvent(this);
+            PickupEvent(this);
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof (SphereCollider))]
 public class Interactor : Collectible {
     public float decayTime;
     protected bool active = false;
@@ -44,7 +45,6 @@ public class Interactor : Collectible {
     protected virtual void Activate()
     {
         this.active = true;
-        gameObject.GetComponent<Renderer>().material.color = Color.cyan;
     }
 
     protected virtual void Deactivate()
