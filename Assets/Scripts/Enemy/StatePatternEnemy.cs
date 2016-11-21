@@ -8,7 +8,7 @@ public class StatePatternEnemy : MonoBehaviour {
     public float sightRange = 10f;
     public float closeEnough = 1f;
     public float distanceAhead = 1f;
-    public Transform[] waypoints;
+    
     public Transform eyes;
     public Vector3 offset = new Vector3(0, .5f, 0);
     public Light visionDisplay;
@@ -38,7 +38,6 @@ public class StatePatternEnemy : MonoBehaviour {
     }
 
 	void Start () {
-        currentState = defaultState;
 	}
 	
 	void Update () {

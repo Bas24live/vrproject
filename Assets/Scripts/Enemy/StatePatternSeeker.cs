@@ -9,6 +9,8 @@ public class StatePatternSeeker : StatePatternEnemy {
     [HideInInspector] public ChaseState chaseState;
     [HideInInspector] public SeekerSearchingState seekerSearchingState;
 
+    public Vector3[] waypoints;
+
     void Awake () {
         patrolState = new PatrolState(this);
         seekerAlertState = new SeekerAlertState(this);
@@ -17,12 +19,16 @@ public class StatePatternSeeker : StatePatternEnemy {
     }
 
     void Start () {
-        base.defaultState = patrolState;
+        defaultState = patrolState;
+        currentState = patrolState;
 	}
 	
 	void Update () {
-       
+        currentState.UpdateState();
 	}
 
+    public void SetWaypoints (Vector3[] waypoints) {
+        this.waypoints = waypoints;
+    }
 
 }

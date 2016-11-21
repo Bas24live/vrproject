@@ -57,7 +57,7 @@ public class PatrolState : ISeekerState {
 
     void Patrol() {
         enemy.visionDisplay.color = new Color(0, 255, 86, 255);
-        enemy.navMeshAgent.destination = enemy.waypoints[nextWatpoint].position;
+        enemy.navMeshAgent.destination = enemy.waypoints[nextWatpoint];
 
         //Move from waypoint to waypoint in a looping fashion
         if (enemy.navMeshAgent.remainingDistance <= enemy.navMeshAgent.stoppingDistance && !enemy.navMeshAgent.pathPending)
