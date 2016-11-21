@@ -17,6 +17,7 @@ public class Attractor : Interactor {
     protected override void Activate()
     {
         base.Activate();
+        gameObject.GetComponent<Renderer>().material.color = Color.cyan;
     }
 
     // deactivation should nullify the attraction
