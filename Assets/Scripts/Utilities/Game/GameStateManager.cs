@@ -11,20 +11,16 @@ public class GameStateManager : MonoBehaviour {
     public GameObject pauseMenu;
     public GameObject blockPrefab;
     public GameObject floorPrefab;
-    public GameObject switchPrefab;
 
     EnemySpawner enemySpawner;
-
-    int ActiveSwitches, inactiveSwitches;
-    public int minRoomSize = 4, maxRoomSize = 8;
-    
-
+    SwitchSystem switchSystem;
     bool paused;
 
     void Awake() {   
         worldContainer = GameObject.FindGameObjectWithTag("World");
         playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
         enemySpawner = GetComponent<EnemySpawner>();
+        switchSystem = GetComponent<SwitchSystem>();
     }
 
     void Start() {
@@ -32,13 +28,13 @@ public class GameStateManager : MonoBehaviour {
         DungeonGenerator.instance.GenerateHauberkDungeon();
         GenerateByGrid(DungeonGenerator._dungeon);
         //enemySpawner.SpawnSeekers();
-        PlaceSwitches();
+        switchSystem.PlaceSwitches();
     }
 
     public void GenerateByGrid(Tile[,] grid)
     {
         int xSize = grid.GetLength(0);
-        int ySize = grid.GetLength(1);
+        int zSize = grid.GetLength(1);
         int xOff = 1;
         float yOff = .5f;
         int zOff = 1;
@@ -46,49 +42,23 @@ public class GameStateManager : MonoBehaviour {
         wallsContainer = new GameObject("Walls");
         wallsContainer.transform.SetParent(worldContainer.transform);
 
-        GenerateFloor(xSize, ySize);
+        GenerateFloor(xSize, zSize);
 
         for (int x = 0; x < xSize; x++)
-            for (int y = 0; y < ySize; y++)
+            for (int y = 0; y < zSize; y++)
                 if (grid[x, y] == Tile.Wall)
-                    CreateBlock(new Vector3(xOff * x, yOff, zOff * y));
+                    CreateBlock(new Vector3(xOff * x - xSize/2, yOff, zOff * y - zSize/2));
     }
 
-    void CreateBlock(Vector3 pos)
-    {
+    void CreateBlock(Vector3 pos) {
         Instantiate(blockPrefab, pos, Quaternion.identity, wallsContainer.transform);
     }
 
     void GenerateFloor(float width, float height) {
-        GameObject floor = Instantiate(floorPrefab, new Vector3((width - 1) / 2, 0, (height - 1) / 2), Quaternion.identity, wallsContainer.transform) as GameObject;
+        GameObject floor = Instantiate(floorPrefab, Vector3.zero, Quaternion.identity, wallsContainer.transform) as GameObject;
         floor.transform.localScale += new Vector3(.1f * (width / 2.5f), 0, .1f * (height / 2.5f));
 
         UnityEditor.NavMeshBuilder.BuildNavMesh();
-    }
-
-    void PlaceSwitches() {
-        GameObject switchContainer = new GameObject("Switches");
-
-        foreach (Rect r in DungeonGenerator._rooms) {
-            int xmin = (int)r.xMin;
-            int xmax = (int)r.xMax;
-            int zmin = (int)r.yMin;
-            int zmax = (int)r.yMax;
-
-            int xLength = (xmax - xmin) - 1;
-            int zLength = (zmax - zmin) - 1;
-
-            if ((xLength >= minRoomSize && xLength <= maxRoomSize) && (zLength >= minRoomSize && zLength <= maxRoomSize)) {
-
-                Vector3 position = new Vector3(xmin + xLength / 2, 0.05f, zmin + zLength / 2);
-
-                SpawnGameObject(position, switchPrefab, switchContainer.transform);
-            }
-        }
-    }
-
-    void SpawnGameObject (Vector3 position, GameObject gameObject, Transform parent) {
-        Instantiate(gameObject, position, gameObject.transform.rotation, parent);
     }
 
     void Update () {
