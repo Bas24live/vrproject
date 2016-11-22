@@ -4,7 +4,7 @@ public class StatePatternEnemy : MonoBehaviour {
 
     public float searchingTurnSpeed = 120f;
     public float searchingDuration = 4f;
-    public float sightRange = 10f;
+    public float sightRange = 7f;
     public float closeEnough = 1f;
     public float distanceAhead = 1f;
     

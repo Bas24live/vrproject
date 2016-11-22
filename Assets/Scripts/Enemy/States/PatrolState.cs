@@ -59,6 +59,8 @@ public class PatrolState : ISeekerState {
         //Move from waypoint to waypoint in a looping fashion
         if (enemy.navMeshAgent.remainingDistance <= enemy.navMeshAgent.stoppingDistance && !enemy.navMeshAgent.pathPending)
             nextWatpoint = (nextWatpoint + 1) % enemy.waypoints.Length;
+
+
     }
 
     
