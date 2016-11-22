@@ -6,7 +6,7 @@ public class GameStateManager : MonoBehaviour {
     public GameObject blockPrefab;
     public GameObject floorPrefab;
 
-    GameObject player;
+    Player player;
     GameObject playerCamera;
     GameObject worldContainer;
 
@@ -23,7 +23,7 @@ public class GameStateManager : MonoBehaviour {
         worldContainer = GameObject.FindGameObjectWithTag("World");
         playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
 
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = FindObjectOfType<Player>();
         spawner = GetComponent<Spawner>();
         enemySpawner = GetComponent<EnemySpawner>();
         switchSystem = GetComponent<SwitchSystem>();
@@ -83,7 +83,7 @@ public class GameStateManager : MonoBehaviour {
 
     public void NextLevel() {
         ++currentLevel;
-        (player.GetComponent<Player>()).Spawn();
+        player.Spawn();
         GenerateWorld();
     }
 
@@ -99,6 +99,7 @@ public class GameStateManager : MonoBehaviour {
         GenerateByGrid(DungeonGenerator._dungeon);
         switchSystem.PlaceSwitches();
         enemySpawner.SpawnSeekers(DungeonGenerator._rooms.Count/2);
+        player.Spawn(spawner);
         collectableManager.SpawnCollectibles();
     }
 }

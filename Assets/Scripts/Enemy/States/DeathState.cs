@@ -12,7 +12,6 @@ public class DeathState : IEnemyState {
 
     public void OnTriggerEnter(Collider collider) {
         if (collider.CompareTag("Wall")) {
-            Debug.Log("Touched a wall");
             Object.Instantiate(enemy.wall, enemy.transform.position, new Quaternion(0,0,0,0));
             Object.Destroy(enemy.gameObject);
         }

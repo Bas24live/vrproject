@@ -15,9 +15,7 @@ public class EnemySpawner : MonoBehaviour {
     public void SpawnSeekers(int count) {
         for (int i = 0; i < count; ++i)
         {
-            GameObject clone = new GameObject();
-            spawner.SpawnRandom(seeker, enemiesContainer.transform, ref clone);
-            Destroy(clone);
+            spawner.SpawnRandom(seeker, enemiesContainer.transform);
         }
     }
 

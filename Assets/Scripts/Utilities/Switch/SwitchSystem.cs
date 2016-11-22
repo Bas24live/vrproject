@@ -47,7 +47,7 @@ public class SwitchSystem : MonoBehaviour {
     }
 
     void OpenExit() {
-        spawner.SpawnGameObject(player.GetStartingPosition(), exitPrefab, switchContainer.transform);
+        spawner.SpawnCenter(exitPrefab, switchContainer.transform);
     }
  
 }

@@ -27,16 +27,6 @@ public class CollectableManager : MonoBehaviour
         this.worldContainer = GameObject.FindGameObjectWithTag("World");
     }
 
-	// Use this for initialization
-	void Start ()
-	{
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     public void SpawnCollectibles()
     {
         if (worldContainer.transform.FindChild(containerName))
@@ -44,7 +34,7 @@ public class CollectableManager : MonoBehaviour
             Destroy(collectibleContainer);
         }
 
-        collectibleContainer = new GameObject("Switches");
+        collectibleContainer = new GameObject("Collectibles");
         collectibleContainer.transform.SetParent(worldContainer.transform);
 
         for (int i = 0; i < numberLamp; i++)

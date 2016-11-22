@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void FixedUpdate () {       
-        playerRb.MoveRotation(Quaternion.Euler(playerRb.rotation.eulerAngles + rotation * Time.fixedDeltaTime));
+        playerRb.MoveRotation(Quaternion.Euler(playerRb.rotation.eulerAngles + rotation));
         playerRb.MovePosition(playerRb.position + velocity * Time.fixedDeltaTime);
     }
 
