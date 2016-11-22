@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Collectible : MonoBehaviour {
-    protected bool pickedUp = false;
+    protected bool pickedUp;
 
     // Call the event when the player collides with the Collectible
     public event System.Action<Collectible> PickupEvent;
@@ -28,6 +28,17 @@ public class Collectible : MonoBehaviour {
         {
             DroppedEvent(this, player);
         }
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.CompareTag("Player"))
+            Pickup();
+    }
+
+    protected virtual void Awake()
+    {
+        this.pickedUp = false;
     }
 
     protected virtual void Start()
