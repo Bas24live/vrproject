@@ -36,44 +36,52 @@ public class Spawner : MonoBehaviour
         } 
     }
 
-    public void SpawnCenter(GameObject gameObject, Transform parent, int width, int height)
+    public bool SpawnCenter(GameObject gameObject, Transform parent, int width, int height)
     {
         Vector2 pos = new Vector2();
         if (GetRoomCenter(ref pos, width, height))
         {
             SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
-        }        
+            return true;
+        }
+        return false;
     }
 
-    public void SpawnCenter(GameObject gameObject, Transform parent)
+    public bool SpawnCenter(GameObject gameObject, Transform parent)
     {
         Vector2 pos = new Vector2();
         if (GetRoomCenter(ref pos))
         {
             SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
+            return true;
         }
+        return false;
     }
 
-    public void SpawnRandom(GameObject gameObject, Transform parent, int width, int height)
+    public bool SpawnRandom(GameObject gameObject, Transform parent, int width, int height)
     {
         Vector2 pos = new Vector2();
         if (GetRoom(ref pos, width, height))
         {
             SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
-        }        
+            return true;
+        }
+        return false;
     }
 
-    public void SpawnRandom(GameObject gameObject, Transform parent)
+    public bool SpawnRandom(GameObject gameObject, Transform parent)
     {
         Vector2 pos = new Vector2();
         if (GetRoom(ref pos))
         {
             SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
+            return true;
         }
+        return false;
     }
 
     private bool GetRoom(ref Vector2 pos)
