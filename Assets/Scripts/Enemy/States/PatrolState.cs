@@ -11,10 +11,6 @@ public class PatrolState : ISeekerState {
     }
 
     public void OnTriggerEnter (Collider collider) {        
-        if (collider.CompareTag("Pickupable")) {
-            enemy.thrownVelocity = collider.GetComponent<Rigidbody>().velocity;
-            ToDeathState();
-        }
     }
 
     public void ToPatrolState () {

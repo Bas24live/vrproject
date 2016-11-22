@@ -9,8 +9,7 @@ public class StatePatternSeeker : StatePatternEnemy {
 
     public Vector3[] waypoints;
 
-    protected override void Start() {
-        base.Start();     
+    protected override void Start() {     
         patrolState = new PatrolState(this);
         seekerAlertState = new SeekerAlertState(this);
         chaseState = new ChaseState(this);
@@ -18,13 +17,22 @@ public class StatePatternSeeker : StatePatternEnemy {
 
         defaultState = patrolState;
         currentState = patrolState;
+
+        base.Start();
     }
 
-    protected override void Update() {
-        base.Update();
+    void Update() {
+        currentState.UpdateState();
     }
 
     public void SetWaypoints (Vector3[] waypoints) {
         this.waypoints = waypoints;
+    }
+
+    void OnTriggerEnter(Collider collider) {
+        if (collider.gameObject.CompareTag("Player"))
+            currentState = defaultState;
+        else
+            currentState.OnTriggerEnter(collider);
     }
 }

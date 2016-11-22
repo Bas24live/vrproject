@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Player : MonoBehaviour {
 
@@ -16,5 +15,9 @@ public class Player : MonoBehaviour {
 
     public Vector3 GetStartingPosition() {
         return startingPosition;
+    }
+
+    public void SetStartingPosition(Vector3 position) {
+
     }
 }
