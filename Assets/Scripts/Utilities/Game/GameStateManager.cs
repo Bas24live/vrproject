@@ -87,7 +87,9 @@ public class GameStateManager : MonoBehaviour {
 
     void GenerateWorld() {
         DungeonGenerator.SetSeed(currentLevel);
-        DungeonGenerator.instance.GenerateHauberkDungeon();        
+        DungeonGenerator.instance.GenerateHauberkDungeon();
+
+        spawner.RunInitialization();       
 
         if (worldContainer.transform.FindChild(mapContainerName))
             Destroy(worldContainer.transform.FindChild(mapContainerName).gameObject);
