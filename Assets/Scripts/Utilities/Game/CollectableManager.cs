@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class CollectableManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class CollectableManager : MonoBehaviour
     public GameObject lampPrefab;
     public GameObject attractorPrefab;
     public GameObject repellerPrefab;
+    public Transform player;
 
     private GameObject worldContainer;
     private GameObject collectibleContainer;
@@ -23,8 +25,18 @@ public class CollectableManager : MonoBehaviour
     void Awake()
     {
 	    collectibles = new List<Collectible>();
+        player = FindObjectOfType<Player>().transform;
         this.spawner = GetComponent<Spawner>();
         this.worldContainer = GameObject.FindGameObjectWithTag("World");
+    }
+
+    void Update()
+    {
+    }
+
+    private void DropCollectible(Collectible c)
+    {
+        
     }
 
     public void SpawnCollectibles()
@@ -68,11 +80,41 @@ public class CollectableManager : MonoBehaviour
 
     private void OnDroppedEvent(Collectible collectible, Transform transform)
     {
-        throw new NotImplementedException();
+        if (collectible is Attractor)
+        {
+            Text t = GameObject.FindGameObjectWithTag("AttText").GetComponent<Text>();
+            int cur = int.Parse(t.text);
+            t.text = String.Format("{0}", cur - 1);
+        } else if (collectible is Lamp)
+        {
+            Text t = GameObject.FindGameObjectWithTag("LamText").GetComponent<Text>();
+            int cur = int.Parse(t.text);
+            t.text = String.Format("{0}", cur - 1);
+        } else if (collectible is Repeller)
+        {
+            Text t = GameObject.FindGameObjectWithTag("RepText").GetComponent<Text>();
+            int cur = int.Parse(t.text);
+            t.text = String.Format("{0}", cur - 1);
+        }
     }
 
     private void OnPickupEvent(Collectible collectible)
     {
-        throw new NotImplementedException();
+        if (collectible is Attractor)
+        {
+            Text t = GameObject.FindGameObjectWithTag("AttText").GetComponent<Text>();
+            int cur = int.Parse(t.text);
+            t.text = String.Format("{0}", cur + 1);
+        } else if (collectible is Lamp)
+        {
+            Text t = GameObject.FindGameObjectWithTag("LamText").GetComponent<Text>();
+            int cur = int.Parse(t.text);
+            t.text = String.Format("{0}", cur + 1);
+        } else if (collectible is Repeller)
+        {
+            Text t = GameObject.FindGameObjectWithTag("RepText").GetComponent<Text>();
+            int cur = int.Parse(t.text);
+            t.text = String.Format("{0}", cur + 1);
+        }
     }
 }
