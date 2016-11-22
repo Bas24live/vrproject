@@ -42,6 +42,9 @@ public class GameStateManager : MonoBehaviour {
         float yOff = .5f;
         int zOff = 1;
 
+        if (worldContainer.transform.FindChild(mapContainerName))
+            Destroy(worldContainer.transform.FindChild(mapContainerName).gameObject);
+
         GameObject mapContainer = new GameObject(mapContainerName);
         mapContainer.transform.SetParent(worldContainer.transform);
 
@@ -90,11 +93,8 @@ public class GameStateManager : MonoBehaviour {
     void GenerateWorld() {
         DungeonGenerator.SetSeed(currentLevel);
         DungeonGenerator.instance.GenerateHauberkDungeon();
-
-        spawner.RunInitialization();       
-
-        if (worldContainer.transform.FindChild(mapContainerName))
-            Destroy(worldContainer.transform.FindChild(mapContainerName).gameObject);
+        
+        spawner.RunInitialization();
 
         GenerateByGrid(DungeonGenerator._dungeon);
         switchSystem.PlaceSwitches();

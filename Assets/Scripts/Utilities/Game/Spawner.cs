@@ -81,7 +81,7 @@ public class Spawner : MonoBehaviour
         return false;
     }
 
-    public bool SpawnRandom(GameObject gameObject, Transform parent, ref GameObject clone)
+    public bool SpawnRandom(GameObject gameObject, Transform parent, out GameObject clone)
     {
         Vector2 pos = new Vector2();
         if (GetRoom(ref pos))
@@ -90,6 +90,7 @@ public class Spawner : MonoBehaviour
             _open[(int)pos.x, (int)pos.y] = false;
             return true;
         }
+        clone = new GameObject();
         return false;
     }
 
