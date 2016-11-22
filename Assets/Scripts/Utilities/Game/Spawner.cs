@@ -36,10 +36,10 @@ public class Spawner : MonoBehaviour
         } 
     }
 
-    public bool SpawnCenter(GameObject gameObject, Transform parent, int width, int height)
+    public bool SpawnCenter(GameObject gameObject, Transform parent, int minSize, int maxSize)
     {
         Vector2 pos = new Vector2();
-        if (GetRoomCenter(ref pos, width, height))
+        if (GetRoomCenter(ref pos, minSize, maxSize))
         {
             SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
@@ -60,10 +60,10 @@ public class Spawner : MonoBehaviour
         return false;
     }
 
-    public bool SpawnRandom(GameObject gameObject, Transform parent, int width, int height)
+    public bool SpawnRandom(GameObject gameObject, Transform parent, int minSize, int maxSize)
     {
         Vector2 pos = new Vector2();
-        if (GetRoom(ref pos, width, height))
+        if (GetRoom(ref pos, minSize, maxSize))
         {
             SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
@@ -105,22 +105,22 @@ public class Spawner : MonoBehaviour
         return false;
     }
 
-    private bool GetRoom(ref Vector2 pos, int width, int height)
+    private bool GetRoom(ref Vector2 pos, int minSize, int maxSize)
     {
         ShuffleList(ref DungeonGenerator._rooms);
         foreach (var r in DungeonGenerator._rooms)
-            if (r.width >= width && r.height >= height)
+            if (r.width >= minSize && r.width <= maxSize && r.height >= minSize && r.height <= maxSize)
                 if(GetRandomTile(r, ref pos))
                     return true;
         return false;
     }
 
-    private bool GetRoomCenter(ref Vector2 pos, int width, int height)
+    private bool GetRoomCenter(ref Vector2 pos, int minSize, int maxSize)
     {
         ShuffleList(ref DungeonGenerator._rooms);
         foreach (var r in DungeonGenerator._rooms)
             if (IsOpen(r.center))
-                if (r.width >= width && r.height >= height)
+                if (r.width >= minSize && r.width <= maxSize && r.height >= minSize && r.height <= maxSize)
                 {
                     pos = r.center; 
                     return true;
