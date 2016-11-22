@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class StatePatternEnemy : MonoBehaviour {
 
@@ -26,25 +25,26 @@ public class StatePatternEnemy : MonoBehaviour {
     [HideInInspector] public IEnemyState defaultState;
     [HideInInspector] public LastKnownPositionState lastKnownPositionState;
     [HideInInspector] public DeathState deathState;
+    [HideInInspector] public WaitingState waitingState;
 
-
-    private void Awake() {  
-        lastKnownPositionState = new LastKnownPositionState(this);
-        deathState = new DeathState(this);
-
+    protected virtual void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player");
         rb = GetComponent<Rigidbody>();
+        player = GameObject.FindGameObjectWithTag("Player");  
     }
 
-	void Start () {
-	}
-	
-	void Update () {
-        currentState.UpdateState();
-	}
+    protected virtual void Start() {
+        lastKnownPositionState = new LastKnownPositionState(this);
+        deathState = new DeathState(this);
+        waitingState = new WaitingState();
+        currentState = waitingState;
+    }
 
-    private void OnTriggerEnter(Collider collider) {
+    protected virtual void Update() {
+        currentState.UpdateState();
+    }
+
+    void OnTriggerEnter(Collider collider) {
         if (collider.gameObject.CompareTag("Player"))
             currentState = defaultState;
         else

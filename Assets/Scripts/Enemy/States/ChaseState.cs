@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
 public class ChaseState : IEnemyState {
 
-    private readonly StatePatternSeeker enemy;
-    private bool callForBlockHelp = true;
+    StatePatternSeeker enemy;
+    bool callForBlockHelp = true;
+
 
     public ChaseState(StatePatternSeeker statePatternEnemy) {
         enemy = statePatternEnemy;
@@ -56,7 +55,6 @@ public class ChaseState : IEnemyState {
     private void Chase() {
         enemy.visionDisplay.color = new Color(255, 0, 0);
         enemy.navMeshAgent.destination = enemy.chaseTarget.position;
-        //enemy.navMeshAgent.Resume();
     }
 
     public void ToBlockingState() {

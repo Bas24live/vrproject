@@ -98,5 +98,6 @@ public class GameStateManager : MonoBehaviour {
 
         GenerateByGrid(DungeonGenerator._dungeon);
         switchSystem.PlaceSwitches();
+        enemySpawner.SpawnSeekers();
     }
 }
