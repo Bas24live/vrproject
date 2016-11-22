@@ -9,8 +9,7 @@ public class Spawner : MonoBehaviour
     private int _xSize;
     private int _ySize;
 
-    private void Start() {
-        DungeonGenerator.instance.GenerateHauberkDungeon();
+    public void RunInitialization() {
         _xSize = DungeonGenerator._dungeon.GetLength(0);
         _ySize = DungeonGenerator._dungeon.GetLength(1);
         InitializeOpen();
