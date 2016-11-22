@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Collectible : MonoBehaviour {
-    protected bool pickedUp;
+    public bool pickedUp;
 
     // Call the event when the player collides with the Collectible
     public event System.Action<Collectible> PickupEvent;
