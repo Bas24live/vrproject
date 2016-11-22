@@ -7,30 +7,38 @@ public class EnemySpawner : MonoBehaviour {
 
     GameObject enemiesContainer;
 
+    public int minRoomSize = 4, maxRoomSize = 8;
+
     void Start () {
         DungeonGenerator.instance.GenerateHauberkDungeon();
         enemiesContainer = new GameObject("Enemies");
-        
-        
     }
 
     public void SpawnSeekers() {
         foreach (Rect r in DungeonGenerator._rooms) {
+
+            int mapXSize = DungeonGenerator._dungeon.GetLength(0) / 2;
+            int mapZSize = DungeonGenerator._dungeon.GetLength(1) / 2;
+
             int xmin = (int)r.xMin;
             int xmax = (int)r.xMax;
-            int ymin = (int)r.yMin;
-            int ymax = (int)r.yMax;
+            int zmin = (int)r.yMin;
+            int zmax = (int)r.yMax;
 
-            GameObject seeker1 = SpawnEnemy (new Vector3(xmin, 0, ymin), seeker);
-            GameObject seeker2 = SpawnEnemy(new Vector3(xmax - 1, 0, ymax - 1), seeker);
 
-            StatePatternSeeker seekerPattern1 = seeker1.GetComponent<StatePatternSeeker> ();
-            StatePatternSeeker seekerPattern2 = seeker2.GetComponent<StatePatternSeeker>();
+            int xLength = (xmax - xmin) - 1;
+            int zLength = (zmax - zmin) - 1;
 
-            Vector3[] waypoints = GenerateWaypoints(xmin, xmax - 1, ymin, ymax - 1);
+            if ((xLength >= minRoomSize && xLength <= maxRoomSize) && (zLength >= minRoomSize && zLength <= maxRoomSize)) {
+                GameObject seeker1 = SpawnEnemy(new Vector3(xmin - mapXSize, 0, zmin - mapZSize), seeker);
 
-            seekerPattern1.SetWaypoints(waypoints);
-            seekerPattern2.SetWaypoints(waypoints);
+                StatePatternSeeker seekerPattern1 = seeker1.GetComponent<StatePatternSeeker>();
+               
+
+                Vector3[] waypoints = GenerateWaypoints(xmin - mapXSize, xmax - 1 - mapXSize, zmin - mapZSize, zmax - 1 -mapZSize);
+
+                seekerPattern1.SetWaypoints(waypoints);
+            }    
         }
     }
 

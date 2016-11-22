@@ -15,6 +15,5 @@ public class StatePatternBlocker : StatePatternEnemy {
 	}
 	
 	void Update () {
-	
 	}
 }

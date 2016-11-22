@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
 public class PatrolState : ISeekerState {
 
-    private readonly StatePatternSeeker enemy;
-    private int nextWatpoint;
+    StatePatternSeeker enemy;    
+    Color lightColor = new Color(0, 255, 86, 255);
+    int nextWatpoint;
 
     public PatrolState (StatePatternSeeker statePatternEnemy) {
         enemy = statePatternEnemy;
@@ -56,7 +55,9 @@ public class PatrolState : ISeekerState {
     }
 
     void Patrol() {
-        enemy.visionDisplay.color = new Color(0, 255, 86, 255);
+        if (enemy.visionDisplay.color != lightColor)
+            enemy.visionDisplay.color = lightColor;
+
         enemy.navMeshAgent.destination = enemy.waypoints[nextWatpoint];
 
         //Move from waypoint to waypoint in a looping fashion

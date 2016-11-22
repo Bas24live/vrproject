@@ -77,7 +77,7 @@ public class DungeonGenerator : MonoBehaviour{
 	public	int _dungeonHeight	= 41;
 	
 	public	bool _randomSeedOn = true;
-	public	int  _seed;					//random seed for map generation
+	public static	int  _seed;					//random seed for map generation
 	
 	public	bool addMapToggle = true;	//toggle mapview between _regions and _dungeon
 	
@@ -112,6 +112,10 @@ public class DungeonGenerator : MonoBehaviour{
 		}
 		return new IntVector2(0,0);
 	}
+
+    public static void SetSeed(int seed) {
+        _seed = seed;
+    }
 	
 	#region RoomTemplates generation
 	
@@ -144,7 +148,7 @@ public class DungeonGenerator : MonoBehaviour{
 		
 		int printAbleSeed = 000;	//smaller memorizeable seed for debugging
 
-		if(_randomSeedOn)	{	Random.InitState(this._seed);	}
+		if(_randomSeedOn)	{	Random.InitState(_seed);	}
 		else				{
 		//	create random base seed to make it visible for debugging			
 		//	printAbleSeed = Random.Range(int.MinValue,int.MaxValue);	//full range
@@ -1592,10 +1596,10 @@ public class DungeonGenerator : MonoBehaviour{
 		this.windingPercent			= windingPercent		?? this.windingPercent;
 		this.tryRoomsFirst			= tryRoomsFirst			?? this.tryRoomsFirst;
 		this.streamLine				= streamLine			?? this.streamLine;
-		this._seed					= seed					?? this._seed;
+		_seed					= seed					?? _seed;
 		
 		if(_randomSeedOn || seed != null){  //use random seed if overlaod was used, or if it is enabled in general
-            Random.InitState(this._seed);
+            Random.InitState(_seed);
 		}					
 		//init grids
 		_dungeon		= new Tile[_dungeonWidth, _dungeonHeight];
@@ -2218,10 +2222,10 @@ public class DungeonGenerator : MonoBehaviour{
 		this.EmptyNeighbours		= EmptyNeighbours		?? this.EmptyNeighbours;
 		this.EmptyCellNeighbours	= EmptyCellNeighbours	?? this.EmptyCellNeighbours;
 		
-		this._seed					= seed					?? this._seed;
+		_seed					= seed					?? _seed;
 		
 		if(_randomSeedOn || seed != null){	//use random seed if overlaod was used, or if it is enabled in general
-			Random.InitState(this._seed);
+			Random.InitState(_seed);
 		}	
 		
 		this.MapSize = new IntVector2(_dungeonWidth, _dungeonHeight);		

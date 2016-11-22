@@ -11,6 +11,7 @@ public class LastKnownPositionState : IEnemyState {
     }
 
     public void OnTriggerEnter(Collider collider) {
+
     }
 
     public void ToPatrolState() {
@@ -56,7 +57,7 @@ public class LastKnownPositionState : IEnemyState {
             ToSearchingState();
         else {
             enemy.visionDisplay.color = new Color(255, 0, 0);
-            enemy.navMeshAgent.SetPath(enemy.navMeshAgent.path);// = enemy.lastKnownPos;
+            enemy.navMeshAgent.SetPath(enemy.navMeshAgent.path);
             enemy.navMeshAgent.Resume();
         }
     }
