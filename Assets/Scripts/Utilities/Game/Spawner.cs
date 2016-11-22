@@ -172,7 +172,7 @@ public class Spawner : MonoBehaviour
         return tiles;
     }
 
-    private void SpawnGameObject(Vector2 pos, GameObject gameObject, Transform parent) {
+    public void SpawnGameObject(Vector2 pos, GameObject gameObject, Transform parent) {
         Instantiate(gameObject, new Vector3(pos.x, gameObject.transform.position.y, pos.y), gameObject.transform.rotation, parent);
     }
 }
