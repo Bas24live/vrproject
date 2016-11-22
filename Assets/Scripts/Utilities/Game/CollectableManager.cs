@@ -51,8 +51,8 @@ public class CollectableManager : MonoBehaviour
 
         for (int i = 0; i < numberLamp; i++)
         {
-            GameObject spawnedLamp = new GameObject();
-            spawner.SpawnRandom(lampPrefab, collectibleContainer.transform, ref spawnedLamp);
+            GameObject spawnedLamp;
+            spawner.SpawnRandom(lampPrefab, collectibleContainer.transform, out spawnedLamp);
             Lamp lamp = spawnedLamp.gameObject.GetComponent<Lamp>();
             lamp.PickupEvent += OnPickupEvent;
             lamp.DroppedEvent += OnDroppedEvent;
@@ -60,8 +60,8 @@ public class CollectableManager : MonoBehaviour
         }
         for (int i = 0; i < numberAttractors; i++)
         {
-            GameObject spawnedAttractor = new GameObject();
-            spawner.SpawnRandom(attractorPrefab, collectibleContainer.transform, ref spawnedAttractor);
+            GameObject spawnedAttractor;
+            spawner.SpawnRandom(attractorPrefab, collectibleContainer.transform, out spawnedAttractor);
             Attractor attractor = spawnedAttractor.gameObject.GetComponent<Attractor>();
             attractor.PickupEvent += OnPickupEvent;
             attractor.DroppedEvent += OnDroppedEvent;
@@ -69,8 +69,8 @@ public class CollectableManager : MonoBehaviour
         }
         for (int i = 0; i < numberRepellers; i++)
         {
-            GameObject spawnedRepeller = new GameObject();
-            spawner.SpawnRandom(repellerPrefab, collectibleContainer.transform, ref spawnedRepeller);
+            GameObject spawnedRepeller;
+            spawner.SpawnRandom(repellerPrefab, collectibleContainer.transform, out spawnedRepeller);
             Repeller repeller = spawnedRepeller.gameObject.GetComponent<Repeller>();
             repeller.PickupEvent += OnPickupEvent;
             repeller.DroppedEvent += OnDroppedEvent;
