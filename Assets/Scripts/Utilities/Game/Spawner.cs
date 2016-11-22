@@ -71,12 +71,12 @@ public class Spawner : MonoBehaviour
         return false;
     }
 
-    public bool SpawnRandom(GameObject gameObject, Transform parent)
+    public bool SpawnRandom(GameObject gameObject, Transform parent, ref GameObject clone)
     {
         Vector2 pos = new Vector2();
         if (GetRoom(ref pos))
         {
-            SpawnGameObject(pos, gameObject, parent);
+            clone = SpawnGameObject(pos, gameObject, parent);
             _open[(int)pos.x, (int)pos.y] = false;
             return true;
         }
