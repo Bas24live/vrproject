@@ -13,6 +13,7 @@ public class GameStateManager : MonoBehaviour {
     Spawner spawner;
     EnemySpawner enemySpawner;
     SwitchSystem switchSystem;
+    private CollectableManager collectableManager;
 
     string mapContainerName = "Map";
     int currentLevel = 0;
@@ -26,6 +27,7 @@ public class GameStateManager : MonoBehaviour {
         spawner = GetComponent<Spawner>();
         enemySpawner = GetComponent<EnemySpawner>();
         switchSystem = GetComponent<SwitchSystem>();
+        collectableManager = GetComponent<CollectableManager>();
     }
 
     void Start() {
@@ -97,8 +99,7 @@ public class GameStateManager : MonoBehaviour {
         GenerateByGrid(DungeonGenerator._dungeon);
         switchSystem.PlaceSwitches();
         enemySpawner.SpawnSeekers(DungeonGenerator._rooms.Count/2);
-
-        
         player.Spawn(spawner);
+        collectableManager.SpawnCollectibles();
     }
 }

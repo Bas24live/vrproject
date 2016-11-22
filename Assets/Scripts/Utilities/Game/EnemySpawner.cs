@@ -17,6 +17,7 @@ public class EnemySpawner : MonoBehaviour {
         {
             GameObject clone = new GameObject();
             spawner.SpawnRandom(seeker, enemiesContainer.transform, ref clone);
+            Destroy(clone);
         }
     }
 
