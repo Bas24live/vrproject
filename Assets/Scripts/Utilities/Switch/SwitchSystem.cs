@@ -9,6 +9,7 @@ public class SwitchSystem : MonoBehaviour {
 
     Spawner spawner;
     GameObject switchContainer;
+    Player player;
 
     string switchContainerName = "Switches";
     int numSwitches, activeSwitches;
@@ -17,6 +18,7 @@ public class SwitchSystem : MonoBehaviour {
     void Awake() {
         worldContainer = GameObject.FindGameObjectWithTag("World");
         spawner = GetComponent<Spawner>();
+        player = FindObjectOfType<Player>();
     }
 
     void Start() {
@@ -39,12 +41,13 @@ public class SwitchSystem : MonoBehaviour {
 
     public void ActivateSwitch() {    
         ++activeSwitches;
+
         if (activeSwitches == numSwitches)
             OpenExit();
     }
 
     void OpenExit() {
-        spawner.SpawnGameObject(, exitPrefab, switchContainer.transform);
+        spawner.SpawnGameObject(player.GetStartingPosition(), exitPrefab, switchContainer.transform);
     }
  
 }

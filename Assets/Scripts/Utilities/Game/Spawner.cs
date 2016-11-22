@@ -9,8 +9,8 @@ public class Spawner : MonoBehaviour
     private int _xSize;
     private int _ySize;
 
-    private void Start()
-    {
+    private void Start() {
+        DungeonGenerator.instance.GenerateHauberkDungeon();
         _xSize = DungeonGenerator._dungeon.GetLength(0);
         _ySize = DungeonGenerator._dungeon.GetLength(1);
         InitializeOpen();
@@ -174,5 +174,9 @@ public class Spawner : MonoBehaviour
 
     public void SpawnGameObject(Vector2 pos, GameObject gameObject, Transform parent) {
         Instantiate(gameObject, new Vector3(pos.x, gameObject.transform.position.y, pos.y), gameObject.transform.rotation, parent);
+    }
+
+    public void SpawnGameObject(Vector3 pos, GameObject gameObject, Transform parent) {
+        Instantiate(gameObject, new Vector3(pos.x, gameObject.transform.position.y, pos.z), gameObject.transform.rotation, parent);
     }
 }

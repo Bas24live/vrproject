@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class GameStateManager : MonoBehaviour { 
 
@@ -11,6 +10,7 @@ public class GameStateManager : MonoBehaviour {
     GameObject playerCamera;
     GameObject worldContainer;
 
+    Spawner spawner;
     EnemySpawner enemySpawner;
     SwitchSystem switchSystem;
 
@@ -23,6 +23,7 @@ public class GameStateManager : MonoBehaviour {
         playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
 
         player = GameObject.FindGameObjectWithTag("Player");
+        spawner = GetComponent<Spawner>();
         enemySpawner = GetComponent<EnemySpawner>();
         switchSystem = GetComponent<SwitchSystem>();
     }
@@ -45,13 +46,9 @@ public class GameStateManager : MonoBehaviour {
         GenerateFloor(xSize, zSize, mapContainer.transform);
 
         for (int x = 0; x < xSize; x++)
-            for (int y = 0; y < zSize; y++)
-                if (grid[x, y] == Tile.Wall)
-                    CreateBlock(new Vector3(xOff * x - xSize/2, yOff, zOff * y - zSize/2), mapContainer.transform);
-    }
-
-    void CreateBlock(Vector3 pos, Transform parent) {
-        Instantiate(blockPrefab, pos, Quaternion.identity, parent);
+            for (int z = 0; z < zSize; z++)
+                if (grid[x, z] == Tile.Wall)
+                    spawner.SpawnGameObject(new Vector3(xOff * x, yOff, zOff * z), blockPrefab, mapContainer.transform);
     }
 
     void GenerateFloor(float width, float height, Transform parent) {
@@ -86,12 +83,11 @@ public class GameStateManager : MonoBehaviour {
         ++currentLevel;
         (player.GetComponent<Player>()).Spawn();
         GenerateWorld();
-
     }
 
     void GenerateWorld() {
-        DungeonGenerator.instance.GenerateHauberkDungeon();
         DungeonGenerator.SetSeed(currentLevel);
+        DungeonGenerator.instance.GenerateHauberkDungeon();        
 
         if (worldContainer.transform.FindChild(mapContainerName))
             Destroy(worldContainer.transform.FindChild(mapContainerName).gameObject);

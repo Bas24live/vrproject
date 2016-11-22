@@ -13,4 +13,8 @@ public class Player : MonoBehaviour {
     public void Spawn() {
         transform.position = startingPosition;
     }
+
+    public Vector3 GetStartingPosition() {
+        return startingPosition;
+    }
 }
