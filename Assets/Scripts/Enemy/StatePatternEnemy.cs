@@ -25,7 +25,6 @@ public class StatePatternEnemy : MonoBehaviour {
     [HideInInspector] public IEnemyState defaultState;
     [HideInInspector] public LastKnownPositionState lastKnownPositionState;
     [HideInInspector] public DeathState deathState;
-    [HideInInspector] public WaitingState waitingState;
 
     protected virtual void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -36,19 +35,6 @@ public class StatePatternEnemy : MonoBehaviour {
     protected virtual void Start() {
         lastKnownPositionState = new LastKnownPositionState(this);
         deathState = new DeathState(this);
-        waitingState = new WaitingState();
-        currentState = waitingState;
-    }
-
-    protected virtual void Update() {
-        currentState.UpdateState();
-    }
-
-    void OnTriggerEnter(Collider collider) {
-        if (collider.gameObject.CompareTag("Player"))
-            currentState = defaultState;
-        else
-            currentState.OnTriggerEnter(collider);
     }
 
     public void LastKnownPosition() {

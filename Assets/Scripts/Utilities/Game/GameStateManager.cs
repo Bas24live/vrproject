@@ -52,7 +52,7 @@ public class GameStateManager : MonoBehaviour {
     }
 
     void GenerateFloor(float width, float height, Transform parent) {
-        GameObject floor = Instantiate(floorPrefab, Vector3.zero, Quaternion.identity, parent) as GameObject;
+        GameObject floor = Instantiate(floorPrefab, spawner.GetMapCenter(), Quaternion.identity, parent) as GameObject;
         floor.transform.localScale += new Vector3(.1f * (width / 2.5f), 0, .1f * (height / 2.5f));
 
         UnityEditor.NavMeshBuilder.BuildNavMesh();
@@ -96,6 +96,6 @@ public class GameStateManager : MonoBehaviour {
 
         GenerateByGrid(DungeonGenerator._dungeon);
         switchSystem.PlaceSwitches();
-        enemySpawner.SpawnSeekers();
+        enemySpawner.SpawnSeekers(DungeonGenerator._rooms.Count/2);
     }
 }

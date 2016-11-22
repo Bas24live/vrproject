@@ -83,7 +83,7 @@ public class Spawner : MonoBehaviour
         return false;
     }
 
-    private bool GetRoom(ref Vector2 pos)
+    public bool GetRoom(ref Vector2 pos)
     {
         ShuffleList(ref DungeonGenerator._rooms);
         foreach (var r in DungeonGenerator._rooms)
@@ -171,11 +171,15 @@ public class Spawner : MonoBehaviour
         return tiles;
     }
 
-    public void SpawnGameObject(Vector2 pos, GameObject gameObject, Transform parent) {
-        Instantiate(gameObject, new Vector3(pos.x, gameObject.transform.position.y, pos.y), gameObject.transform.rotation, parent);
+    public GameObject SpawnGameObject(Vector2 pos, GameObject gameObject, Transform parent) {
+        return Instantiate(gameObject, new Vector3(pos.x, gameObject.transform.position.y, pos.y), gameObject.transform.rotation, parent) as GameObject;
     }
 
-    public void SpawnGameObject(Vector3 pos, GameObject gameObject, Transform parent) {
-        Instantiate(gameObject, new Vector3(pos.x, gameObject.transform.position.y, pos.z), gameObject.transform.rotation, parent);
+    public GameObject SpawnGameObject(Vector3 pos, GameObject gameObject, Transform parent) {
+        return Instantiate(gameObject, new Vector3(pos.x, gameObject.transform.position.y, pos.z), gameObject.transform.rotation, parent) as GameObject;
+    }
+
+    public Vector3 GetMapCenter() {
+        return new Vector3(_xSize / 2, 0, _ySize / 2);
     }
 }
